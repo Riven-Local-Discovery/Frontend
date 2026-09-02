@@ -1,0 +1,234 @@
+@use '../../styles/shared' as *;
+
+/* Geometry measured from the design reference at 90rem wide:
+   19.0625rem band, three 201x159 cards ending at the content column's right edge. */
+
+.section {
+  @include section-shell;
+  display: flex;
+  align-items: center;
+  height: 19.0625rem;
+  isolation: isolate;
+}
+
+/* --- Background --------------------------------------------------------- */
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  /* Fallback gradient behind the photograph */
+  background:
+    radial-gradient(80% 120% at 62% 74%, rgba(255, 138, 82, 0.6) 0%, rgba(255, 107, 53, 0.24) 40%, rgba(10, 19, 38, 0) 72%),
+    linear-gradient(180deg, #2a2233 0%, #3a2a2a 46%, #101a2e 100%);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(6, 11, 24, 0.82) 0%, rgba(6, 11, 24, 0.5) 32%, rgba(6, 11, 24, 0.04) 56%, rgba(6, 11, 24, 0.08) 100%),
+    linear-gradient(180deg, rgba(6, 11, 24, 0.3) 0%, rgba(6, 11, 24, 0) 24%, rgba(6, 11, 24, 0.28) 100%);
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.inner {
+  @include container;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.copy {
+  max-width: 35rem;
+  padding-top: 1.125rem;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  margin-top: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.875rem;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.lede {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* --- Cards -------------------------------------------------------------- */
+
+.cards {
+  display: flex;
+  align-items: stretch;
+  gap: 1.3125rem;
+  margin: 0 4.1875rem 0 0;
+}
+
+.card {
+  @include glass-card(0.75rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 12.5625rem;
+  height: 9.9375rem;
+  padding: 1.25rem;
+  background: rgba(12, 22, 42, 0.32);
+  border-color: rgba(255, 255, 255, 0.24);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 0.875rem 2.125rem rgba(255, 107, 53, 0.22);
+  }
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cardIcon {
+  flex: 0 0 auto;
+  color: #ffd9c7;
+}
+
+.cardLabel {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.cardLabelSmall {
+  font-size: 0.9375rem;
+  font-weight: 300;
+}
+
+.cardLabelStrong {
+  font-size: 1.375rem;
+  font-weight: 400;
+}
+
+.cardArrow {
+  margin: 0 0.5rem 0 auto;
+  color: #fff;
+}
+
+/* --- Flow line into the footer ------------------------------------------ */
+
+.flow {
+  position: absolute;
+  right: 0;
+  bottom: -150px;
+  z-index: 5;
+  width: 28.75rem;
+  height: 18.75rem;
+  pointer-events: none;
+}
+
+.flowPath,
+.flowGlow {
+  stroke-dasharray: 640;
+  stroke-dashoffset: 640;
+}
+
+.flowPathDrawn {
+  animation: drawCtaFlow 1.8s cubic-bezier(0.45, 0.05, 0.25, 1) forwards;
+}
+
+@keyframes drawCtaFlow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowPath,
+  .flowGlow {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .card {
+    width: 11rem;
+    height: 9.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    height: auto;
+    padding: 3.5rem 0;
+  }
+
+  .flow {
+    display: none;
+  }
+
+  .inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 1.875rem;
+  }
+
+  .card {
+    width: 9.375rem;
+    height: 8.25rem;
+    padding: 1rem;
+  }
+
+  .cardLabelStrong {
+    font-size: 1.125rem;
+  }
+}
+
+/* --- Gradient stops (var() is invalid in SVG presentation attributes) ---- */
+
+.stopAccentSoft {
+  stop-color: var(--accent-soft);
+}
+
+.stopAccent {
+  stop-color: var(--accent);
+}

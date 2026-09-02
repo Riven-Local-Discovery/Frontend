@@ -1,0 +1,339 @@
+@use '../../styles/shared' as *;
+
+/* Geometry traced from the design reference at 90rem wide.
+   Container content column is 81.25rem, so all offsets below are
+   relative to that column's left edge. */
+
+.section {
+  @include section-shell;
+  height: 53.75rem;
+  overflow: hidden;
+}
+
+/* --- Flow line ---------------------------------------------------------- */
+
+.flow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flowPath,
+.flowGlow,
+.flowStub {
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 2600;
+}
+
+.flowStub {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+}
+
+.flowPathDrawn {
+  animation: drawFlow 2.6s cubic-bezier(0.45, 0.05, 0.25, 1) forwards;
+}
+
+.nodes {
+  opacity: 0;
+  transition: opacity 0.8s ease 1.4s;
+}
+
+.nodesVisible {
+  opacity: 1;
+}
+
+.nodeBlue {
+  color: #6f9dff;
+  filter: drop-shadow(0 0 0.625rem rgba(62, 107, 245, 0.9));
+}
+
+.nodeAccent {
+  color: var(--accent);
+  filter: drop-shadow(0 0 0.625rem rgba(255, 107, 53, 0.9));
+}
+
+@keyframes drawFlow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowPath,
+  .flowGlow,
+  .flowStub {
+    stroke-dashoffset: 0;
+  }
+
+  .nodes {
+    opacity: 1;
+  }
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.inner {
+  @include container;
+  position: relative;
+  height: 100%;
+  z-index: 1;
+}
+
+.eyebrow {
+  @include eyebrow;
+  position: absolute;
+  top: 3.9375rem;
+  left: var(--gutter);
+}
+
+.rows {
+  position: relative;
+  height: 100%;
+}
+
+.row {
+  position: absolute;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Row 01 — card then photo, flush, right-aligned to the column */
+.rows > .row:nth-child(1) {
+  top: 0.9375rem;
+  left: 27rem;
+  height: 16.625rem;
+}
+
+/* Row 02 — photo at the column's left edge, card to the right */
+.rows > .row:nth-child(2) {
+  top: 17.4375rem;
+  left: 0;
+  height: 16.8125rem;
+  gap: 15.1875rem;
+}
+
+/* Row 03 — card indented, photo flush to the column's right edge */
+.rows > .row:nth-child(3) {
+  top: 35.8125rem;
+  left: 14.9375rem;
+  height: 17.4375rem;
+  gap: 9.5rem;
+}
+
+/* --- Card --------------------------------------------------------------- */
+
+.card {
+  @include glass-card(0.875rem);
+  flex: 0 0 14.5rem;
+  width: 14.5rem;
+  padding: 2rem 1.875rem;
+}
+
+.rows > .row:nth-child(1) .card {
+  flex: 0 0 13.875rem;
+  width: 13.875rem;
+}
+
+.rows > .row:nth-child(2) .card {
+  flex: 0 0 14.9375rem;
+  width: 14.9375rem;
+}
+
+.rows > .row:nth-child(3) .card {
+  flex: 0 0 14.8125rem;
+  width: 14.8125rem;
+}
+
+.number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: #fff;
+}
+
+.cardTitle {
+  margin-top: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.cardBody {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.learn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.125rem;
+  font-size: 0.8125rem;
+  color: #fff;
+}
+
+.learnArrow {
+  transition: transform 0.25s ease;
+}
+
+.learn:hover .learnArrow {
+  transform: translateX(0.3125rem);
+}
+
+/* --- Photo panel -------------------------------------------------------- */
+
+.photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #2a1a12 0%, #17202f 100%);
+}
+
+.rows > .row:nth-child(1) .photo {
+  flex: 0 0 40.3125rem;
+  width: 40.3125rem;
+}
+
+.rows > .row:nth-child(2) .photo {
+  flex: 0 0 34.375rem;
+  width: 34.375rem;
+}
+
+.rows > .row:nth-child(3) .photo {
+  flex: 0 0 41.9375rem;
+  width: 41.9375rem;
+}
+
+.photoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* The panels are much wider than the source frames, so each photo needs its
+   own focal point to keep the subject's head inside the crop. */
+.rows > .row:nth-child(1) .photoImg {
+  object-position: center 10%;
+}
+
+.rows > .row:nth-child(2) .photoImg {
+  object-position: center 32%;
+}
+
+.rows > .row:nth-child(3) .photoImg {
+  object-position: center 34%;
+}
+
+.photoVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 10, 4, 0.14) 0%, rgba(6, 11, 24, 0.34) 100%);
+}
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .section {
+    height: auto;
+    padding: 1.875rem 0 3.75rem;
+  }
+
+  .eyebrow {
+    position: static;
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1.875rem;
+    margin-top: 1.625rem;
+  }
+
+  .row,
+  .rows > .row:nth-child(1),
+  .rows > .row:nth-child(2),
+  .rows > .row:nth-child(3) {
+    position: static;
+    height: auto;
+    left: auto;
+    top: auto;
+    gap: 1.25rem;
+  }
+
+  .rows > .row:nth-child(1) {
+    margin-left: 12%;
+  }
+
+  .rows > .row:nth-child(3) {
+    margin-left: 6%;
+  }
+
+  .rows > .row:nth-child(1) .photo,
+  .rows > .row:nth-child(2) .photo,
+  .rows > .row:nth-child(3) .photo {
+    flex: 1 1 auto;
+    width: auto;
+    min-height: 14.375rem;
+  }
+
+  .flow {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .rows {
+    gap: 2.75rem;
+  }
+
+  .row,
+  .rows > .row:nth-child(1),
+  .rows > .row:nth-child(2),
+  .rows > .row:nth-child(3) {
+    flex-direction: column;
+    align-items: stretch;
+    margin-left: 0;
+    gap: 1rem;
+  }
+
+  .card,
+  .rows > .row:nth-child(1) .card,
+  .rows > .row:nth-child(2) .card,
+  .rows > .row:nth-child(3) .card {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .rows > .row:nth-child(1) .photo,
+  .rows > .row:nth-child(2) .photo,
+  .rows > .row:nth-child(3) .photo {
+    height: 13.75rem;
+    min-height: 0;
+  }
+}
+
+/* --- Gradient stops (var() is invalid in SVG presentation attributes) ---- */
+
+.stopBlue {
+  stop-color: var(--line-blue);
+}
+
+.stopPurple {
+  stop-color: var(--line-purple);
+}
+
+.stopAccent {
+  stop-color: var(--accent);
+}

@@ -1,0 +1,233 @@
+@use '../../styles/shared' as *;
+
+/* Geometry measured from the design reference at 90rem wide. */
+
+.section {
+  @include section-shell;
+  height: 13.8125rem;
+  overflow: hidden;
+}
+
+.ghost {
+  @extend %ghost-numeral;
+  top: -8px;
+  left: max(1.5rem, calc((100vw - 81.25rem) / 2));
+  font-size: 10.5rem;
+  color: rgba(255, 255, 255, 0.05);
+}
+
+/* --- Continuing flow line ----------------------------------------------- */
+
+.flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8.125rem;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flowPath,
+.flowGlow {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+}
+
+.flowPathDrawn {
+  animation: drawHowFlow 2s cubic-bezier(0.45, 0.05, 0.25, 1) forwards;
+}
+
+@keyframes drawHowFlow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowPath,
+  .flowGlow {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- Wave divider (sits above the row, as in the reference) -------------- */
+
+.wave {
+  position: absolute;
+  top: -105px;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 9.375rem;
+  pointer-events: none;
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.inner {
+  @include container;
+  position: relative;
+  height: 100%;
+  z-index: 1;
+}
+
+.eyebrow {
+  @include eyebrow;
+  position: absolute;
+  top: 1.5rem;
+  left: var(--gutter);
+}
+
+.steps {
+  position: absolute;
+  top: 2.5rem;
+  left: var(--gutter);
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding-left: 13.1875rem;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  width: 19.6875rem;
+}
+
+.step:nth-child(2) {
+  width: 18.125rem;
+}
+
+/* Connect's copy sits in a narrower measure in the reference */
+.step:nth-child(2) .stepBody {
+  max-width: 8.25rem;
+}
+
+.step:last-child {
+  width: auto;
+}
+
+.circle {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 3.5625rem;
+  align-items: center;
+  justify-content: center;
+  width: 3.5625rem;
+  height: 3.5625rem;
+  margin-top: 1.0625rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.circleBlue {
+  color: #cddcff;
+  border-color: rgba(62, 107, 245, 0.6);
+  box-shadow: 0 0 1.625rem rgba(62, 107, 245, 0.4), inset 0 0 1rem rgba(62, 107, 245, 0.2);
+}
+
+.circleIndigo {
+  color: #d6ccff;
+  border-color: rgba(123, 75, 224, 0.6);
+  box-shadow: 0 0 1.625rem rgba(123, 75, 224, 0.35), inset 0 0 1rem rgba(123, 75, 224, 0.18);
+}
+
+.circleAccent {
+  color: #ffd0bb;
+  border-color: rgba(255, 107, 53, 0.65);
+  box-shadow: 0 0 1.625rem rgba(255, 107, 53, 0.35), inset 0 0 1rem rgba(255, 107, 53, 0.18);
+}
+
+.lineDot {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #eaf1ff;
+  box-shadow: 0 0 0.875rem 0.25rem rgba(120, 165, 255, 0.95);
+}
+
+.stepText {
+  padding-top: 0;
+}
+
+.stepTitle {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.stepBody {
+  max-width: 9.25rem;
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .section {
+    height: auto;
+    padding: 3.75rem 0 2.5rem;
+  }
+
+  .ghost,
+  .flow {
+    display: none;
+  }
+
+  .eyebrow,
+  .steps {
+    position: static;
+  }
+
+  .steps {
+    gap: 3rem;
+    margin-top: 1.875rem;
+    padding-left: 0;
+  }
+
+  .step {
+    width: auto;
+    flex: 1 1 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .steps {
+    flex-direction: column;
+    gap: 1.875rem;
+  }
+
+  .wave {
+    display: none;
+  }
+
+  .stepBody {
+    max-width: 26.25rem;
+  }
+}
+
+/* --- Gradient stops (var() is invalid in SVG presentation attributes) ---- */
+
+.stopPurple {
+  stop-color: var(--line-purple);
+}
+
+.stopAccentSoft {
+  stop-color: var(--accent-soft);
+}
+
+.stopAccent {
+  stop-color: var(--accent);
+}

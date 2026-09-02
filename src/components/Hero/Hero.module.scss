@@ -1,0 +1,257 @@
+@use '../../styles/shared' as *;
+
+/* Geometry measured from the design reference at 90rem wide:
+   hero band 43.875rem tall, H1 top at 16.375rem, stat card 282x336 at x1093. */
+
+.hero {
+  @include section-shell;
+  height: 43.875rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* --- Background --------------------------------------------------------- */
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  /* Fallback gradient behind the photograph */
+  background:
+    radial-gradient(120% 80% at 62% 12%, rgba(255, 138, 82, 0.55) 0%, rgba(255, 107, 53, 0.16) 34%, rgba(6, 11, 24, 0) 62%),
+    linear-gradient(180deg, #1a2438 0%, #0d1526 46%, var(--bg-deep) 100%);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(6, 11, 24, 0.8) 0%, rgba(6, 11, 24, 0.16) 20%, rgba(6, 11, 24, 0.24) 56%, var(--bg-deep) 100%),
+    linear-gradient(90deg, rgba(6, 11, 24, 0.86) 0%, rgba(6, 11, 24, 0.38) 36%, rgba(6, 11, 24, 0) 60%);
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.inner {
+  @include container;
+  position: relative;
+  height: 100%;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.copy {
+  padding-top: 15.75rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 4.9375rem;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.titleAccent {
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 25rem;
+  margin-top: 1.625rem;
+  @include body-copy;
+  font-size: 1.1875rem;
+  line-height: 1.8;
+  color: #cfd7e2;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1.4375rem;
+  margin-top: 2.5rem;
+}
+
+.btnFilled {
+  @include btn-filled;
+  min-width: 10.4375rem;
+}
+
+.btnOutline {
+  @include btn-outline;
+  min-width: 10.625rem;
+}
+
+/* --- Glass stat card ---------------------------------------------------- */
+
+.statCard {
+  @include glass-card(1.125rem);
+  width: 17.625rem;
+  height: 21rem;
+  flex: 0 0 17.625rem;
+  padding: 1.625rem 1.875rem;
+  margin-top: 20.625rem;
+}
+
+.statList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin: 0;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  padding: 1.125rem 0;
+
+  & + & {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.statIcon {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.statLabel {
+  margin-top: 0.125rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* --- Scroll cue --------------------------------------------------------- */
+
+.scroll {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 2.125rem;
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+}
+
+.scrollMouse {
+  color: rgba(255, 255, 255, 0.55);
+
+  circle {
+    animation: scrollDot 1.9s ease-in-out infinite;
+  }
+}
+
+.scrollText {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+@keyframes scrollDot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(0.4375rem);
+    opacity: 0.35;
+  }
+}
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .title {
+    font-size: 4.25rem;
+  }
+
+  .copy {
+    padding-top: 12.5rem;
+  }
+
+  .statCard {
+    margin-top: 16.875rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: auto;
+    min-height: 41.25rem;
+    padding: 10rem 0 5rem;
+  }
+
+  .content {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    transform: none;
+  }
+
+  .copy {
+    padding-top: 0;
+  }
+
+  .statCard {
+    width: 100%;
+    max-width: 21.25rem;
+    height: auto;
+    flex: 0 0 auto;
+    margin-top: 0.625rem;
+  }
+
+  .scroll {
+    position: static;
+    margin-top: 2.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 2.875rem;
+    white-space: normal;
+  }
+
+  .lede {
+    font-size: 1rem;
+  }
+
+  .buttons {
+    flex-wrap: wrap;
+  }
+}
