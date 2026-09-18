@@ -1,0 +1,184 @@
+@use './AuthShared' as *;
+
+.page {
+    position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: url(/Frontend/src/assets/img/auth-river-sunset.jpg);
+  overflow: hidden;;
+}
+
+.media {
+  @include auth-media;
+}
+
+.mediaImage {
+  @include auth-media-image;
+}
+
+.scrim {
+  @include auth-media-scrim;
+}
+
+.header {
+  @include auth-header;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.logoMark {
+  color: #fff;
+}
+
+.wordmark {
+  @include wordmark(2rem);
+}
+
+.headerActions {
+  @include auth-header-actions;
+}
+
+.headerLink {
+  @include auth-header-link;
+}
+
+.body {
+  @include auth-body;
+}
+
+.pitch {
+  @include auth-pitch;
+}
+
+.eyebrow {
+  @include auth-eyebrow;
+}
+
+.title {
+  @include auth-title;
+}
+
+.titleAccent {
+  @include auth-title-accent;
+}
+
+.lede {
+  @include auth-lede;
+}
+
+.flowTag {
+  @include auth-flow-tag;
+}
+
+.panel {
+  @include auth-panel;
+}
+
+.panelTitle {
+  @include auth-panel-title;
+}
+
+.panelSubtitle {
+  @include auth-panel-subtitle;
+}
+
+.form {
+  @include auth-form;
+}
+
+.field {
+  @include auth-field;
+}
+
+.label {
+  @include auth-label;
+}
+
+.inputShell {
+  @include auth-input-shell;
+}
+
+.inputShellInvalid {
+  @include auth-input-shell-invalid;
+}
+
+.inputIcon {
+  @include auth-input-icon;
+}
+
+.input {
+  @include auth-input;
+}
+
+.iconButton {
+  @include auth-icon-button;
+}
+
+.error {
+  @include auth-error;
+}
+
+.checkRow {
+  @include auth-check-row;
+}
+
+.checkboxLabel {
+  @include auth-checkbox-label;
+}
+
+.checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.checkboxBox {
+  @include auth-checkbox-box;
+}
+
+.checkboxBoxChecked {
+  @include auth-checkbox-box-checked;
+}
+
+.inlineLink {
+  @include auth-inline-link;
+}
+
+.submit {
+  @include auth-submit;
+}
+
+.submitDisabled {
+  @include auth-submit-disabled;
+}
+
+.formError {
+  @include auth-error;
+  text-align: center;
+}
+
+.divider {
+  @include auth-divider;
+}
+
+.socialRow {
+  @include auth-social-row;
+}
+
+.socialButton {
+  @include auth-social-button;
+}
+
+.footnote {
+  @include auth-footnote;
+}
+
+@include auth-responsive;

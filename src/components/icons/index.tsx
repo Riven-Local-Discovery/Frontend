@@ -386,3 +386,348 @@ export function YouTubeIcon({ className, size = 16 }: IconProps) {
     </svg>
   );
 }
+
+/* --- Auth (Sign In / Register) ------------------------------------------ */
+
+/** Envelope. */
+export function MailIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="2.5" y="5" width="19" height="14" rx="2.4" />
+      <path d="M3.2 6.3 12 13l8.8-6.7" />
+    </svg>
+  );
+}
+
+/** Phone handset. */
+export function PhoneIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M5.2 3.6h3.1l1.4 3.9-2 1.6a13.6 13.6 0 0 0 6.2 6.2l1.6-2 3.9 1.4v3.1c0 1-.9 1.8-1.9 1.6-4-.6-7.8-2.5-10.7-5.4S3.5 8 2.9 4c-.2-1 .6-1.9 1.6-1.9Z" />
+    </svg>
+  );
+}
+
+/** Padlock. */
+export function LockIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="4.2" y="10.4" width="15.6" height="10.4" rx="2.2" />
+      <path d="M7.4 10.4V7.2a4.6 4.6 0 1 1 9.2 0v3.2" />
+      <path d="M12 14.4v3" />
+    </svg>
+  );
+}
+
+/** Open eye — "show password". */
+export function EyeIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M2 12s3.6-6.8 10-6.8S22 12 22 12s-3.6 6.8-10 6.8S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="2.8" />
+    </svg>
+  );
+}
+
+/** Crossed-out eye — "hide password". */
+export function EyeOffIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3.5 3.5l17 17" />
+      <path d="M10.6 5.4A10.8 10.8 0 0 1 12 5.2c6.4 0 10 6.8 10 6.8a13.6 13.6 0 0 1-3.4 4.1M6.5 6.8A13.5 13.5 0 0 0 2 12s3.6 6.8 10 6.8a10.4 10.4 0 0 0 4.3-.9" />
+      <path d="M9.9 10.1a2.8 2.8 0 0 0 3.9 3.9" />
+    </svg>
+  );
+}
+
+/** Rounded outline of a person — "full name". */
+export function UserIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="7.8" r="4" />
+      <path d="M4.4 20.4c0-4 3.4-6.8 7.6-6.8s7.6 2.8 7.6 6.8" />
+    </svg>
+  );
+}
+
+/** Storefront. */
+export function StoreIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3.4 9.4 4.6 4h14.8l1.2 5.4" />
+      <path d="M3.4 9.4a2.6 2.6 0 0 0 5.1.5 2.6 2.6 0 0 0 5 0 2.6 2.6 0 0 0 5 0 2.6 2.6 0 0 0 5.1-.5" />
+      <path d="M4.6 10v10.4h14.8V10" />
+      <path d="M9.6 20.4v-5.6h4.8v5.6" />
+    </svg>
+  );
+}
+
+/** 2x2 grid — "category". */
+export function GridIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3.2" y="3.2" width="7.6" height="7.6" rx="1.6" />
+      <rect x="13.2" y="3.2" width="7.6" height="7.6" rx="1.6" />
+      <rect x="3.2" y="13.2" width="7.6" height="7.6" rx="1.6" />
+      <rect x="13.2" y="13.2" width="7.6" height="7.6" rx="1.6" />
+    </svg>
+  );
+}
+
+/** Price tag — "vendor type". */
+export function TagIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M20.4 12.9 12.9 20.4a1.8 1.8 0 0 1-2.5 0l-6.8-6.8a1.8 1.8 0 0 1-.5-1.6L4.4 4.4l7.6-.7c.6-.1 1.2.1 1.6.5l6.8 6.8a1.8 1.8 0 0 1 0 2.5Z" />
+      <circle cx="9" cy="9" r="1.4" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+/** Lined document — "brand story". */
+export function DocumentIcon({ className, size = 18, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 2.8h8l4.6 4.6v13.8H6Z" />
+      <path d="M14 2.8v4.6h4.6" />
+      <path d="M8.6 13h6.8M8.6 16.4h6.8" />
+    </svg>
+  );
+}
+
+/** Cloud with an upload arrow. */
+export function UploadCloudIcon({ className, size = 20, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M7.2 18.4a4.4 4.4 0 0 1-.6-8.76 5.6 5.6 0 0 1 10.9-1.86A4.2 4.2 0 0 1 17 18.4H7.2Z" />
+      <path d="M12 9.6v8M9 12.4l3-3 3 3" />
+    </svg>
+  );
+}
+
+/** Checkmark, for checked checkboxes. */
+export function CheckIcon({ className, size = 14, strokeWidth = 2 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3 8.5 6.3 12 13 4" />
+    </svg>
+  );
+}
+
+/** Chevron pointing down, for selects. */
+export function ChevronDownIcon({ className, size = 16, strokeWidth = 1.6 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3.5 6 8 10.5 12.5 6" />
+    </svg>
+  );
+}
+
+/** Trending-up arrow with a small chart, in a circle — "grow your business". */
+export function TrendingUpIcon({ className, size = 20, strokeWidth = 1.4 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3 17 9.5 10.5 13.5 14.5 21 7" />
+      <path d="M15 7h6v6" />
+    </svg>
+  );
+}
+
+/** Multi-colour "G" mark, used only on the Google auth button. */
+export function GoogleIcon({ className, size = 18 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="#4285F4"
+        d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.46a5.52 5.52 0 0 1-2.4 3.62v3h3.87c2.27-2.09 3.57-5.17 3.57-8.81Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.96-1.07 7.94-2.92l-3.87-3c-1.08.72-2.46 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.27v3.11A12 12 0 0 0 12 24Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.27 14.27a7.2 7.2 0 0 1 0-4.54V6.62H1.27a12 12 0 0 0 0 10.76l4-3.11Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.77c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.95 1.18 15.24 0 12 0A12 12 0 0 0 1.27 6.62l4 3.11C6.22 6.88 8.87 4.77 12 4.77Z"
+      />
+    </svg>
+  );
+}

@@ -1,0 +1,645 @@
+/* ==========================================================================
+   RIVEN — shared layout for the Sign In / Register split-screen pages.
+   Consumed by SignIn.module.scss and Register.module.scss via
+   `@use './AuthShared' as *;`.
+   ========================================================================== */
+
+@forward "../../styles/shared";
+@use "../../styles/shared" as *;
+
+/* --- Page shell ----------------------------------------------------------
+   Full-bleed background photo on the left, a floating glass panel with the
+   form docked to the right. The panel scrolls independently once its
+   content is taller than the viewport. */
+
+@mixin auth-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+@mixin auth-media {
+  /* Fixed, not absolute: .page's height grows with its (scrollable)
+     content — Register's form is taller than the viewport. An absolute
+     background would stretch/crop to match that full scrollable height
+     instead of the visible viewport, which is what made the photo look
+     over-zoomed and cropped wrong. Fixed always sizes to the viewport
+     and matches how the rest of the site pins its body background. */
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* Softer/wider version of Hero.module.scss .media's fallback gradient.
+     Hero's version was tuned for a ~700px-tall bounded band; stretched
+     over a full 100vh auth page it read as an abrupt colored rectangle
+     up top with flat dark below. Wider spread + extra stops blend it
+     smoothly across the taller box, and it still barely shows once the
+     real photo loads on top of it. */
+  background:
+    radial-gradient(
+      140% 90% at 58% 15%,
+      rgba(255, 145, 87, 0.42) 0%,
+      rgba(255, 107, 53, 0.2) 24%,
+      rgba(255, 107, 53, 0.08) 42%,
+      rgba(6, 11, 24, 0) 72%
+    ),
+    linear-gradient(
+      180deg,
+      #1a2438 0%,
+      #12192c 30%,
+      #0d1526 55%,
+      var(--bg-deep) 100%
+    );
+}
+
+@mixin auth-media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The source photo is a tall portrait crop (~2:3) built for a portrait
+     canvas; on a wide, short desktop viewport a centered cover crops the
+     sunset out entirely. Anchoring to the top keeps the sun and the
+     upper river bends in frame and only trims the foreground instead. */
+  object-position: top center;
+}
+
+@mixin auth-media-scrim {
+  position: absolute;
+  inset: 0;
+  /* Exact copy of Hero.module.scss .overlay: vertical fade into
+     --bg-deep top/bottom, horizontal fade that darkens the left
+     (text) side and clears toward the right (panel) side. */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6, 11, 24, 0.8) 0%,
+      rgba(6, 11, 24, 0.16) 20%,
+      rgba(6, 11, 24, 0.24) 56%,
+      var(--bg-deep) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(6, 11, 24, 0.86) 0%,
+      rgba(6, 11, 24, 0.38) 36%,
+      rgba(6, 11, 24, 0) 60%
+    );
+}
+
+@mixin auth-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem clamp(1.25rem, 4vw, 3.5rem) 0;
+}
+
+@mixin auth-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+@mixin auth-header-link {
+  @include btn-base;
+  /* Matches Navbar's .join button padding/size for visual parity with
+     Home — this is an outline treatment (not filled) since it's a
+     secondary action here, but should feel equally substantial. */
+  padding: 0.9375rem 2.125rem;
+  font-size: 1rem;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* --- Body: pitch column (left) + form panel (right) ---------------------- */
+
+@mixin auth-body {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: 2.5rem clamp(1.25rem, 4vw, 3.5rem) 3rem;
+}
+
+@mixin auth-pitch {
+  flex: 1 1 26rem;
+  /* Cap the pitch column at a real 480px once the site's fluid root
+     font-size (calc(100vw/90), tuned for the marketing hero) would
+     otherwise scale it past its intended reference-design size. */
+  max-width: min(30rem, 480px);
+  padding-top: 2rem;
+}
+
+@mixin auth-eyebrow {
+  @include eyebrow;
+  margin-bottom: 1.25rem;
+}
+
+@mixin auth-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* Was capped at 3.375rem — noticeably smaller than the Home hero's
+     4.9375rem title. Bring it closer to that scale (it stays a bit
+     smaller since this column shares the screen with a form). */
+  font-size: clamp(2.75rem, 4.2vw, 4.25rem);
+  line-height: 1.05;
+  color: var(--text);
+}
+
+@mixin auth-title-accent {
+  color: var(--accent);
+}
+
+@mixin auth-lede {
+  @include body-copy;
+  margin-top: 1.25rem;
+  max-width: 27rem;
+  /* Match the Home hero's lede size (1.1875rem) instead of the smaller
+     1.0625rem this used before. */
+  font-size: 1.1875rem;
+  line-height: 1.8;
+}
+
+/* --- Feature rows (register page only) ------------------------------------ */
+
+@mixin auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.375rem;
+  margin-top: 2.25rem;
+}
+
+@mixin auth-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+@mixin auth-feature-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--accent);
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.4);
+  border-radius: 50%;
+}
+
+@mixin auth-feature-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@mixin auth-feature-copy {
+  margin-top: 0.2rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+@mixin auth-flow-tag {
+  display: inline-block;
+  margin-top: 2.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.35;
+  color: var(--accent);
+}
+
+/* --- Form panel ------------------------------------------------------------ */
+
+@mixin auth-panel {
+  @include glass-card(1.25rem);
+  flex: 1 1 26rem;
+  /* Same cap as auth-pitch: a real 464px, so the form card can't grow
+     wider than its designed size on very wide viewports and get
+     clipped against the window edge. */
+  max-width: min(29rem, 464px);
+  width: 100%;
+  padding: clamp(1.5rem, 2.4vw, 2.25rem);
+  background: rgba(9, 16, 32, 0.72);
+}
+
+@mixin auth-panel-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.625rem;
+  color: var(--text);
+}
+
+@mixin auth-panel-subtitle {
+  margin-top: 0.375rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+@mixin auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.625rem;
+}
+
+@mixin auth-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* --- Fields ---------------------------------------------------------------- */
+
+@mixin auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  /* Grid/flex items default to min-width: auto, which can hold this
+     column open to its content's intrinsic width and overflow the
+     row. Force it shrinkable — .input already has min-width: 0. */
+  min-width: 0;
+}
+
+@mixin auth-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+@mixin auth-input-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0 0.9375rem;
+  height: 3.125rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 0.625rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--accent);
+    background: rgba(255, 107, 53, 0.05);
+  }
+}
+
+@mixin auth-input-shell-invalid {
+  border-color: #f0605a;
+}
+
+@mixin auth-input-icon {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+}
+
+@mixin auth-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text);
+  background: transparent;
+  border: none;
+
+  &::placeholder {
+    color: rgba(151, 163, 182, 0.7);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin auth-textarea-shell {
+  align-items: flex-start;
+  height: auto;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+
+@mixin auth-textarea {
+  @include auth-input;
+  height: auto;
+  min-height: 4.5rem;
+  padding-top: 0.15rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+@mixin auth-select {
+  @include auth-input;
+  appearance: none;
+  cursor: pointer;
+
+  &:invalid {
+    color: rgba(151, 163, 182, 0.7);
+  }
+}
+
+@mixin auth-icon-button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+@mixin auth-error {
+  font-size: 0.8125rem;
+  color: #f0908c;
+}
+
+/* --- Vendor type pills (register page) ------------------------------------ */
+
+@mixin auth-pill-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+}
+
+@mixin auth-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+@mixin auth-pill-checked {
+  color: var(--text);
+  background: rgba(255, 107, 53, 0.1);
+  border-color: var(--accent);
+}
+
+@mixin auth-pill-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+@mixin auth-pill-dot-checked {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: inset 0 0 0 2px rgba(9, 16, 32, 0.72);
+}
+
+/* --- Dropzone (register page) ---------------------------------------------- */
+
+@mixin auth-dropzone {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 0.9375rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--card-border);
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover,
+  &.dragActive {
+    border-color: var(--accent);
+    background: rgba(255, 107, 53, 0.05);
+  }
+}
+
+@mixin auth-dropzone-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@mixin auth-dropzone-title {
+  font-size: 0.9375rem;
+  color: var(--text);
+}
+
+@mixin auth-dropzone-hint {
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin auth-dropzone-icon {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+}
+
+/* --- Checkbox / remember-me row -------------------------------------------- */
+
+@mixin auth-check-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+@mixin auth-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+@mixin auth-checkbox-box {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.0625rem;
+  color: transparent;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.3125rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+@mixin auth-checkbox-box-checked {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@mixin auth-inline-link {
+  color: var(--accent);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-soft);
+  }
+}
+
+/* --- Submit / divider / social ---------------------------------------------- */
+
+@mixin auth-submit {
+  @include btn-filled;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  margin-top: 0.25rem;
+}
+
+@mixin auth-submit-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+
+  &:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: none;
+  }
+}
+
+@mixin auth-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  span {
+    padding: 0 0.875rem;
+  }
+}
+
+@mixin auth-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@mixin auth-social-button {
+  @include btn-outline;
+  gap: 0.625rem;
+  padding: 0.8125rem 1rem;
+  font-size: 0.875rem;
+}
+
+@mixin auth-footnote {
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* --- Responsive -------------------------------------------------------------- */
+
+@mixin auth-responsive {
+  @media (max-width: 1024px) {
+    .body {
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding-top: 1.5rem;
+    }
+
+    .pitch {
+      max-width: none;
+      padding-top: 0.5rem;
+      text-align: center;
+    }
+
+    .lede {
+      margin-inline: auto;
+    }
+
+    .features {
+      max-width: 26rem;
+      margin-inline: auto;
+      text-align: left;
+    }
+
+    .panel {
+      max-width: 32rem;
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header {
+      padding-top: 1.5rem;
+    }
+
+    .row,
+    .pillGroup,
+    .socialRow {
+      grid-template-columns: 1fr;
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+  }
+}

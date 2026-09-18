@@ -1,4 +1,4 @@
-@use '../../styles/shared' as *;
+@use "../../styles/shared" as *;
 
 /* Geometry measured from the design reference at 90rem wide:
    hero band 43.875rem tall, H1 top at 16.375rem, stat card 282x336 at x1093. */
@@ -18,7 +18,12 @@
   z-index: -2;
   /* Fallback gradient behind the photograph */
   background:
-    radial-gradient(120% 80% at 62% 12%, rgba(255, 138, 82, 0.55) 0%, rgba(255, 107, 53, 0.16) 34%, rgba(6, 11, 24, 0) 62%),
+    radial-gradient(
+      120% 80% at 62% 12%,
+      rgba(255, 138, 82, 0.55) 0%,
+      rgba(255, 107, 53, 0.16) 34%,
+      rgba(6, 11, 24, 0) 62%
+    ),
     linear-gradient(180deg, #1a2438 0%, #0d1526 46%, var(--bg-deep) 100%);
 }
 
@@ -34,8 +39,19 @@
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(6, 11, 24, 0.8) 0%, rgba(6, 11, 24, 0.16) 20%, rgba(6, 11, 24, 0.24) 56%, var(--bg-deep) 100%),
-    linear-gradient(90deg, rgba(6, 11, 24, 0.86) 0%, rgba(6, 11, 24, 0.38) 36%, rgba(6, 11, 24, 0) 60%);
+    linear-gradient(
+      180deg,
+      rgba(6, 11, 24, 0.8) 0%,
+      rgba(6, 11, 24, 0.16) 20%,
+      rgba(6, 11, 24, 0.24) 56%,
+      var(--bg-deep) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(6, 11, 24, 0.86) 0%,
+      rgba(6, 11, 24, 0.38) 36%,
+      rgba(6, 11, 24, 0) 60%
+    );
 }
 
 /* --- Layout ------------------------------------------------------------- */

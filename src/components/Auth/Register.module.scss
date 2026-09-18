@@ -1,0 +1,293 @@
+@use './AuthShared' as *;
+
+.page {
+    position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: url(/Frontend/src/assets/img/WhatsApp\ Image\ 2026-09-16\ at\ 10.00.40\ PM.jpeg);
+  overflow: hidden;
+  align-items: flex-start;
+}
+
+.media {
+  @include auth-media;
+}
+
+.mediaImage {
+  @include auth-media-image;
+}
+
+.scrim {
+  @include auth-media-scrim;
+}
+
+.header {
+  @include auth-header;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.wordmark {
+  @include wordmark(2rem);
+}
+
+.headerActions {
+  @include auth-header-actions;
+}
+
+.headerLink {
+  @include auth-header-link;
+}
+
+.body {
+  @include auth-body;
+  align-items: flex-start;
+  padding-top: 10rem;
+  padding-bottom: 4rem;
+}
+
+.pitch {
+  @include auth-pitch;
+}
+
+.eyebrow {
+  @include auth-eyebrow;
+}
+
+.title {
+  @include auth-title;
+}
+
+.titleAccent {
+  @include auth-title-accent;
+}
+
+.lede {
+  @include auth-lede;
+}
+
+.features {
+  @include auth-features;
+}
+
+.feature {
+  @include auth-feature;
+}
+
+.featureIcon {
+  @include auth-feature-icon;
+}
+
+.featureTitle {
+  @include auth-feature-title;
+}
+
+.featureCopy {
+  @include auth-feature-copy;
+}
+
+.flowTag {
+  @include auth-flow-tag;
+}
+
+.panel {
+  @include auth-panel;
+}
+
+.panelTitle {
+  @include auth-panel-title;
+}
+
+.panelSubtitle {
+  @include auth-panel-subtitle;
+}
+
+.form {
+  @include auth-form;
+}
+
+.row {
+  @include auth-row;
+}
+
+.field {
+  @include auth-field;
+}
+
+.label {
+  @include auth-label;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.inputShell {
+  @include auth-input-shell;
+}
+
+.inputShellInvalid {
+  @include auth-input-shell-invalid;
+}
+
+.textareaShell {
+  @include auth-textarea-shell;
+}
+
+.inputIcon {
+  @include auth-input-icon;
+}
+
+.input {
+  @include auth-input;
+}
+
+.textarea {
+  @include auth-textarea;
+}
+
+.select {
+  @include auth-select;
+}
+
+.selectChevron {
+  @include auth-input-icon;
+  flex: 0 0 auto;
+}
+
+.iconButton {
+  @include auth-icon-button;
+}
+
+.error {
+  @include auth-error;
+}
+
+.pillGroup {
+  @include auth-pill-group;
+}
+
+.pill {
+  @include auth-pill;
+}
+
+.pillChecked {
+  @include auth-pill-checked;
+}
+
+.pillRadio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.pillDot {
+  @include auth-pill-dot;
+}
+
+.pillDotChecked {
+  @include auth-pill-dot-checked;
+}
+
+.dropzone {
+  @include auth-dropzone;
+}
+
+.dropzoneActive {
+  border-color: var(--accent);
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.dropzoneInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.dropzoneIcon {
+  @include auth-dropzone-icon;
+}
+
+.dropzoneLabel {
+  @include auth-dropzone-label;
+}
+
+.dropzoneTitle {
+  @include auth-dropzone-title;
+}
+
+.dropzoneHint {
+  @include auth-dropzone-hint;
+}
+
+.checkRow {
+  @include auth-check-row;
+  align-items: flex-start;
+}
+
+.checkboxLabel {
+  @include auth-checkbox-label;
+}
+
+.checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.checkboxBox {
+  @include auth-checkbox-box;
+}
+
+.checkboxBoxChecked {
+  @include auth-checkbox-box-checked;
+}
+
+.inlineLink {
+  @include auth-inline-link;
+}
+
+.submit {
+  @include auth-submit;
+}
+
+.submitDisabled {
+  @include auth-submit-disabled;
+}
+
+.formError {
+  @include auth-error;
+  text-align: center;
+}
+
+.divider {
+  @include auth-divider;
+}
+
+.socialRow {
+  @include auth-social-row;
+}
+
+.socialButton {
+  @include auth-social-button;
+}
+
+.footnote {
+  @include auth-footnote;
+}
+
+@include auth-responsive;

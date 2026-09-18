@@ -1,13 +1,14 @@
-import type { ComponentType } from 'react';
+import type { ComponentType } from "react";
 import {
   FacebookIcon,
   InstagramIcon,
   RivenMark,
   TikTokIcon,
   YouTubeIcon,
-} from '../icons';
-import type { IconProps } from '../icons';
-import styles from './SiteFooter.module.scss';
+} from "../icons";
+import type { IconProps } from "../icons";
+import styles from "./SiteFooter.module.scss";
+import myLogo from "../../assets/img/logo.png";
 
 interface FooterLink {
   label: string;
@@ -28,48 +29,62 @@ interface SocialLink {
 
 const FOOTER_COLUMNS: readonly FooterColumn[] = [
   {
-    heading: 'For Shoppers',
+    heading: "For Shoppers",
     links: [
-      { label: 'Bazaars & Events', href: '#bazaars-events' },
-      { label: 'Explore Cities', href: '#explore-cities' },
-      { label: 'Brands', href: '#brands' },
-      { label: 'Riven Community', href: '#riven-community' },
+      { label: "Bazaars & Events", href: "#bazaars-events" },
+      { label: "Explore Cities", href: "#explore-cities" },
+      { label: "Brands", href: "#brands" },
+      { label: "Riven Community", href: "#riven-community" },
     ],
   },
   {
-    heading: 'For Vendors',
+    heading: "For Vendors",
     links: [
-      { label: 'Sell on Riven', href: '#sell-on-riven' },
-      { label: 'Vendor Resources', href: '#vendor-resources' },
-      { label: 'Success Stories', href: '#success-stories' },
-      { label: 'Vendor Community', href: '#vendor-community' },
+      { label: "Sell on Riven", href: "#sell-on-riven" },
+      { label: "Vendor Resources", href: "#vendor-resources" },
+      { label: "Success Stories", href: "#success-stories" },
+      { label: "Vendor Community", href: "#vendor-community" },
     ],
   },
   {
-    heading: 'For Organizers',
+    heading: "For Organizers",
     links: [
-      { label: 'List Your Bazaar', href: '#list-your-bazaar' },
-      { label: 'Organizer Guide', href: '#organizer-guide' },
-      { label: 'Resources', href: '#resources' },
-      { label: 'Organizer Community', href: '#organizer-community' },
+      { label: "List Your Bazaar", href: "#list-your-bazaar" },
+      { label: "Organizer Guide", href: "#organizer-guide" },
+      { label: "Resources", href: "#resources" },
+      { label: "Organizer Community", href: "#organizer-community" },
     ],
   },
   {
-    heading: 'Company',
+    heading: "Company",
     links: [
-      { label: 'About Riven', href: '#about-riven' },
-      { label: 'Our Story', href: '#our-story' },
-      { label: 'Careers', href: '#careers' },
-      { label: 'Contact Us', href: '#contact-us' },
+      { label: "About Riven", href: "#about-riven" },
+      { label: "Our Story", href: "#our-story" },
+      { label: "Careers", href: "#careers" },
+      { label: "Contact Us", href: "#contact-us" },
     ],
   },
 ];
 
 const SOCIAL_LINKS: readonly SocialLink[] = [
-  { id: 'instagram', label: 'Riven on Instagram', href: '#instagram', Icon: InstagramIcon },
-  { id: 'facebook', label: 'Riven on Facebook', href: '#facebook', Icon: FacebookIcon },
-  { id: 'tiktok', label: 'Riven on TikTok', href: '#tiktok', Icon: TikTokIcon },
-  { id: 'youtube', label: 'Riven on YouTube', href: '#youtube', Icon: YouTubeIcon },
+  {
+    id: "instagram",
+    label: "Riven on Instagram",
+    href: "https://www.instagram.com/riven.discover?igsi=eHI5amxlYWhiaXNr",
+    Icon: InstagramIcon,
+  },
+  {
+    id: "facebook",
+    label: "Riven on Facebook",
+    href: "https://www.facebook.com/share/18rwu32LcX/",
+    Icon: FacebookIcon,
+  },
+  {
+    id: "tiktok",
+    label: "Riven on TikTok",
+    href: "https://www.tiktok.com/@riven.local.disco?_r=1&_t=ZS-99PLw7sxuhZ",
+    Icon: TikTokIcon,
+  },
 ];
 
 export default function SiteFooter() {
@@ -78,18 +93,33 @@ export default function SiteFooter() {
       <div className={styles.inner}>
         <div className={styles.grid}>
           <div className={styles.brand}>
-            <a className={styles.logo} href="#top" aria-label="Riven — home">
-              <RivenMark className={styles.mark} size={44} />
-              <span className={styles.wordmark}>Riven</span>
+            <a
+              className={styles.logo}
+              href="#top"
+              aria-label="Riven - home"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              <img
+                src={myLogo}
+                alt="Logo"
+                style={{ height: "20px", width: "auto", display: "block" }}
+              />
+
+              <span className={styles.wordmark}>iven</span>
             </a>
             <p className={styles.tagline}>
-              Riven is the digital Nile — connecting Egypt&apos;s bazaars, brands, and people.
+              Riven is the digital Nile — connecting Egypt&apos;s bazaars,
+              brands, and people.
             </p>
             <ul className={styles.socials}>
               {SOCIAL_LINKS.map(({ id, label, href, Icon }) => (
                 <li key={id}>
                   <a className={styles.social} href={href} aria-label={label}>
-                    <Icon size={22} />
+                    <Icon size={30} />
                   </a>
                 </li>
               ))}
@@ -97,7 +127,11 @@ export default function SiteFooter() {
           </div>
 
           {FOOTER_COLUMNS.map((column) => (
-            <nav className={styles.column} key={column.heading} aria-label={column.heading}>
+            <nav
+              className={styles.column}
+              key={column.heading}
+              aria-label={column.heading}
+            >
               <h2 className={styles.columnHeading}>{column.heading}</h2>
               <ul className={styles.columnList}>
                 {column.links.map((link) => (
@@ -112,16 +146,17 @@ export default function SiteFooter() {
           ))}
 
           <div className={styles.mantra}>
-            <span className={styles.mantraWord}>Discover</span>
+             <span className={styles.mantraWord}>
+              <span className={styles.dot} aria-hidden="true" />
+              Discover
+            </span>
             <span className={styles.mantraWord}>
               <span className={styles.dot} aria-hidden="true" />
               Connect
             </span>
             <span className={styles.mantraWord}>
-              <span className={styles.dot} aria-hidden="true" />
-              Belong
-            </span>
-
+              <span  aria-hidden="true" />
+              
             <svg
               className={styles.ripple}
               viewBox="0 0 120 60"
@@ -129,28 +164,58 @@ export default function SiteFooter() {
               focusable="false"
             >
               <defs>
-                <filter id="footerRippleGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <filter
+                  id="footerRippleGlow"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
                   <feGaussianBlur stdDeviation="3" />
                 </filter>
               </defs>
-              <ellipse className={styles.rippleRing} cx="60" cy="30" rx="30" ry="9" opacity="0.22" />
-              <ellipse className={styles.rippleRing} cx="60" cy="30" rx="19" ry="6" opacity="0.4" />
-              <ellipse className={styles.rippleRingInner} cx="60" cy="30" rx="9" ry="3" opacity="0.7" />
-              <circle className={styles.rippleCore} cx="60" cy="30" r="3" filter="url(#footerRippleGlow)" />
+              <ellipse
+                className={styles.rippleRing}
+                cx="60"
+                cy="30"
+                rx="30"
+                ry="9"
+                opacity="0.22"
+              />
+              <ellipse
+                className={styles.rippleRing}
+                cx="60"
+                cy="30"
+                rx="19"
+                ry="6"
+                opacity="0.4"
+              />
+              <ellipse
+                className={styles.rippleRingInner}
+                cx="60"
+                cy="30"
+                rx="9"
+                ry="3"
+                opacity="0.7"
+              />
+              <circle
+                className={styles.rippleCore}
+                cx="60"
+                cy="30"
+                r="3"
+                filter="url(#footerRippleGlow)"
+              />
               <circle cx="60" cy="30" r="1.8" fill="#ffd7c4" />
             </svg>
+              <span id="belong" className={styles.belongText}>Belong</span>
+            </span>
+
           </div>
         </div>
 
         <div className={styles.bottomBar}>
           <p className={styles.copyright}>© 2025 Riven. All rights reserved.</p>
-          <p className={styles.lang}>
-            <span className={styles.langInactive}>AR</span>
-            <span className={styles.langSep} aria-hidden="true">
-              |
-            </span>
-            <span className={styles.langActive}>EN</span>
-          </p>
+         
         </div>
       </div>
     </footer>

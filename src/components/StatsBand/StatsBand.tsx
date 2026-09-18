@@ -21,7 +21,7 @@ export default function StatsBand() {
   return (
     <section className={styles.band} aria-label="Riven by the numbers">
       <span className={styles.ghost} aria-hidden="true">
-        03
+        
       </span>
 
       <div className={styles.inner}>

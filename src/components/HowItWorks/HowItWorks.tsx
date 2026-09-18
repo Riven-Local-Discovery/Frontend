@@ -62,7 +62,7 @@ export default function HowItWorks() {
   return (
     <section className={styles.section} id="explore" ref={ref} aria-labelledby="how-eyebrow">
       <span className={styles.ghost} aria-hidden="true">
-        03
+        
       </span>
 
       <svg

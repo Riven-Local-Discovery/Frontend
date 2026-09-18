@@ -1,4 +1,4 @@
-@use '../../styles/shared' as *;
+@use "../../styles/shared" as *;
 
 /* Geometry measured from the design reference at 90rem wide: 13.75rem tall,
    brand column at the left, four link columns, mantra stack at the right. */
@@ -131,11 +131,12 @@
 
 .ripple {
   position: absolute;
-  left: -58px;
-  bottom: -60px;
+  left: -60px;
+  bottom: -15px;
   width: 7.5rem;
   height: 3.75rem;
   pointer-events: none;
+  
 }
 
 /* --- Bottom bar --------------------------------------------------------- */
@@ -177,7 +178,45 @@
   font-weight: 500;
 }
 
+.belongText {
+  display: inline-block;
+  padding: 0 0.4rem; // Default desktop padding
+
+  // Tablets & below (<= 900px)
+  @media (max-width: 1200px) {
+    padding: 0 0.5rem;
+  }
+
+  // Mobile screens (<= 640px)
+  @media (max-width: 640px) {
+    padding: 0 0.2rem;
+  }
+}
+
 /* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1300px) {
+  .ripple {
+    left: -48px;
+    bottom: -12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .ripple {
+    left: -48px;
+  }
+}
+@media (max-width: 1150px) {
+  .ripple {
+    left: -45px;
+  }
+}
+@media (max-width: 1100px) {
+  .ripple {
+    left: -43px;
+  }
+}
 
 @media (max-width: 1023px) {
   .footer {
@@ -195,10 +234,12 @@
     margin-top: 2.5rem;
     padding-top: 1.125rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+
   }
 
   .ripple {
-    display: none;
+    left: -60px;
+    bottom: -15px;
   }
 }
 
@@ -218,6 +259,10 @@
     gap: 1.125rem;
     justify-self: start;
   }
+    .ripple {
+    left: -58px;
+    bottom: -15px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -231,6 +276,7 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+
 }
 
 /* --- Ripple strokes (var() is invalid in SVG presentation attributes) ---- */
