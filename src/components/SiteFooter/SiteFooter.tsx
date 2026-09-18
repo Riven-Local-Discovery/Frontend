@@ -1,11 +1,5 @@
 import type { ComponentType } from "react";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  RivenMark,
-  TikTokIcon,
-  YouTubeIcon,
-} from "../icons";
+import { FacebookIcon, InstagramIcon, TikTokIcon } from "../icons";
 import type { IconProps } from "../icons";
 import styles from "./SiteFooter.module.scss";
 import myLogo from "../../assets/img/logo.png";
@@ -118,7 +112,13 @@ export default function SiteFooter() {
             <ul className={styles.socials}>
               {SOCIAL_LINKS.map(({ id, label, href, Icon }) => (
                 <li key={id}>
-                  <a className={styles.social} href={href} aria-label={label}>
+                  <a
+                    className={styles.social}
+                    href={href}
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Icon size={30} />
                   </a>
                 </li>
@@ -155,8 +155,6 @@ export default function SiteFooter() {
               Connect
             </span>
             <span className={styles.mantraWord}>
-              <span  aria-hidden="true" />
-              
             <svg
               className={styles.ripple}
               viewBox="0 0 120 60"

@@ -73,6 +73,10 @@
 
 /* --- Link columns ------------------------------------------------------- */
 
+.column {
+  min-width: 0;
+}
+
 .columnHeading {
   font-family: var(--font-body);
   font-size: 0.875rem;

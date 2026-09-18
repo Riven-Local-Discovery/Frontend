@@ -1,13 +1,7 @@
 @use './AuthShared' as *;
 
 .page {
-    position: relative;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  background: url(/Frontend/src/assets/img/WhatsApp\ Image\ 2026-09-16\ at\ 10.00.40\ PM.jpeg);
-  overflow: hidden;
+  @include auth-page;
   align-items: flex-start;
 }
 
@@ -235,6 +229,11 @@
 .checkRow {
   @include auth-check-row;
   align-items: flex-start;
+  /* The Terms/Privacy anchors are a sibling of the label, not inside it, so
+     the row must flow them inline instead of pushing them to the far edge. */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
 }
 
 .checkboxLabel {
@@ -247,6 +246,12 @@
   height: 1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
+
+  /* The real input is visually hidden, so mirror its focus ring onto the box. */
+  &:focus-visible + .checkboxBox {
+    outline: 2px solid var(--accent-soft);
+    outline-offset: 2px;
+  }
 }
 
 .checkboxBox {

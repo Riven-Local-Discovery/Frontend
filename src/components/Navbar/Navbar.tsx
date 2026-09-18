@@ -36,9 +36,32 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock the page behind the mobile overlay and let Escape close it.
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [menuOpen]);
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
@@ -79,7 +102,7 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
        
 
         <div className={styles.actions}>
-          {/* <a
+          <a
             className={styles.signIn}
             href="#signin"
             onClick={(event) => {
@@ -90,14 +113,14 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
             }}
           >
             Sign In
-          </a> */}
+          </a>
           <a
             className={styles.join}
-           href="#signin"
+            href="#join"
             onClick={(event) => {
-              if (onSignInClick) {
+              if (onJoinClick) {
                 event.preventDefault();
-                onSignInClick();
+                onJoinClick();
               }
             }}
           >

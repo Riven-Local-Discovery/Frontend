@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type DragEvent, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import authImage from '../../assets/img/register-river-sunset.jpg';
 import myLogo from '../../assets/img/logo.png';
@@ -152,7 +152,6 @@ export default function Register({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const setField = <K extends keyof RegisterValues>(key: K, value: RegisterValues[K]) => {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -315,9 +314,14 @@ export default function Register({
                       value={values.fullName}
                       onChange={(event) => setField('fullName', event.target.value)}
                       aria-invalid={Boolean(errors.fullName)}
+                      aria-describedby={errors.fullName ? 'reg-fullname-error' : undefined}
                     />
                   </div>
-                  {errors.fullName && <span className={styles.error}>{errors.fullName}</span>}
+                  {errors.fullName && (
+                    <span id="reg-fullname-error" className={styles.error}>
+                      {errors.fullName}
+                    </span>
+                  )}
                 </div>
 
                 <div className={styles.field}>
@@ -336,9 +340,14 @@ export default function Register({
                       value={values.email}
                       onChange={(event) => setField('email', event.target.value)}
                       aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? 'reg-email-error' : undefined}
                     />
                   </div>
-                  {errors.email && <span className={styles.error}>{errors.email}</span>}
+                  {errors.email && (
+                    <span id="reg-email-error" className={styles.error}>
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -357,9 +366,14 @@ export default function Register({
                     value={values.phone}
                     onChange={(event) => setField('phone', event.target.value)}
                     aria-invalid={Boolean(errors.phone)}
+                    aria-describedby={errors.phone ? 'reg-phone-error' : undefined}
                   />
                 </div>
-                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+                {errors.phone && (
+                  <span id="reg-phone-error" className={styles.error}>
+                    {errors.phone}
+                  </span>
+                )}
               </div>
 
               <div className={styles.row}>
@@ -378,6 +392,7 @@ export default function Register({
                       value={values.password}
                       onChange={(event) => setField('password', event.target.value)}
                       aria-invalid={Boolean(errors.password)}
+                      aria-describedby={errors.password ? 'reg-password-error' : undefined}
                     />
                     <button
                       type="button"
@@ -388,7 +403,11 @@ export default function Register({
                       {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
                     </button>
                   </div>
-                  {errors.password && <span className={styles.error}>{errors.password}</span>}
+                  {errors.password && (
+                    <span id="reg-password-error" className={styles.error}>
+                      {errors.password}
+                    </span>
+                  )}
                 </div>
 
                 <div className={styles.field}>
@@ -406,6 +425,7 @@ export default function Register({
                       value={values.confirmPassword}
                       onChange={(event) => setField('confirmPassword', event.target.value)}
                       aria-invalid={Boolean(errors.confirmPassword)}
+                      aria-describedby={errors.confirmPassword ? 'reg-confirm-password-error' : undefined}
                     />
                     <button
                       type="button"
@@ -416,7 +436,11 @@ export default function Register({
                       {showConfirmPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
                     </button>
                   </div>
-                  {errors.confirmPassword && <span className={styles.error}>{errors.confirmPassword}</span>}
+                  {errors.confirmPassword && (
+                    <span id="reg-confirm-password-error" className={styles.error}>
+                      {errors.confirmPassword}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -434,9 +458,14 @@ export default function Register({
                     value={values.vendorName}
                     onChange={(event) => setField('vendorName', event.target.value)}
                     aria-invalid={Boolean(errors.vendorName)}
+                    aria-describedby={errors.vendorName ? 'reg-vendor-name-error' : undefined}
                   />
                 </div>
-                {errors.vendorName && <span className={styles.error}>{errors.vendorName}</span>}
+                {errors.vendorName && (
+                  <span id="reg-vendor-name-error" className={styles.error}>
+                    {errors.vendorName}
+                  </span>
+                )}
               </div>
 
               <div className={styles.field}>
@@ -451,6 +480,7 @@ export default function Register({
                     value={values.category}
                     onChange={(event) => setField('category', event.target.value)}
                     aria-invalid={Boolean(errors.category)}
+                    aria-describedby={errors.category ? 'reg-category-error' : undefined}
                     required
                   >
                     <option value="" disabled>
@@ -464,7 +494,11 @@ export default function Register({
                   </select>
                   <ChevronDownIcon className={styles.selectChevron} size={16} />
                 </div>
-                {errors.category && <span className={styles.error}>{errors.category}</span>}
+                {errors.category && (
+                  <span id="reg-category-error" className={styles.error}>
+                    {errors.category}
+                  </span>
+                )}
               </div>
 
               <div className={styles.field}>
@@ -526,7 +560,6 @@ export default function Register({
                     value={values.location}
                     onChange={(event) => setField('location', event.target.value)}
                   />
-                  <MapPinIcon className={styles.inputIcon} size={16} />
                 </div>
               </div>
 
@@ -542,7 +575,6 @@ export default function Register({
                   onDrop={handleDrop}
                 >
                   <input
-                    ref={fileInputRef}
                     className={styles.dropzoneInput}
                     type="file"
                     accept="image/png,image/jpeg"
@@ -590,13 +622,17 @@ export default function Register({
               </div>
 
               <div className={styles.checkRow}>
-                <label className={styles.checkboxLabel}>
+                {/* The Terms/Privacy anchors sit outside the <label> so that
+                    following them does not also toggle the checkbox. */}
+                <label className={styles.checkboxLabel} htmlFor="reg-terms">
                   <input
+                    id="reg-terms"
                     className={styles.checkbox}
                     type="checkbox"
                     checked={values.agreeToTerms}
                     onChange={(event) => setField('agreeToTerms', event.target.checked)}
                     aria-invalid={Boolean(errors.agreeToTerms)}
+                    aria-describedby={errors.agreeToTerms ? 'reg-terms-error' : undefined}
                   />
                   <span
                     className={`${styles.checkboxBox} ${values.agreeToTerms ? styles.checkboxBoxChecked : ''}`}
@@ -604,11 +640,18 @@ export default function Register({
                   >
                     {values.agreeToTerms && <CheckIcon size={11} strokeWidth={2.4} />}
                   </span>
-                  I agree to the <a className={styles.inlineLink} href="#terms">Terms &amp; Conditions</a> and{' '}
-                  <a className={styles.inlineLink} href="#privacy">Privacy Policy</a>
+                  I agree to the
                 </label>
+                <span>
+                  <a className={styles.inlineLink} href="#terms">Terms &amp; Conditions</a> and{' '}
+                  <a className={styles.inlineLink} href="#privacy">Privacy Policy</a>
+                </span>
               </div>
-              {errors.agreeToTerms && <span className={styles.error}>{errors.agreeToTerms}</span>}
+              {errors.agreeToTerms && (
+                <span id="reg-terms-error" className={styles.error}>
+                  {errors.agreeToTerms}
+                </span>
+              )}
 
               {serverError && <p className={styles.formError}>{serverError}</p>}
 

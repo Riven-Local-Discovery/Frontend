@@ -20,9 +20,9 @@ export default function App() {
       <SignIn
         onLogoClick={() => setView('home')}
         onSwitchToRegister={() => setView('register')}
-        onSubmit={(values) => {
-          console.log('sign in', values);
+        onSubmit={() => {
           // TODO: call the real sign-in endpoint, then setView('home') on success.
+          // Do not log `values` here — it carries the plaintext password.
         }}
         onForgotPassword={() => {
           // TODO: route to a "forgot password" flow.
@@ -42,9 +42,9 @@ export default function App() {
       <Register
         onLogoClick={() => setView('home')}
         onSwitchToSignIn={() => setView('signIn')}
-        onSubmit={(values) => {
-          console.log('register', values);
+        onSubmit={() => {
           // TODO: call the real vendor sign-up endpoint, then setView('home') on success.
+          // Do not log `values` here — it carries the plaintext password.
         }}
         onGoogleSignUp={() => {
           // TODO: kick off Google OAuth.
