@@ -1,0 +1,121 @@
+@use '../DashboardShared' as *;
+
+/* --- Search -------------------------------------------------------------- */
+
+.shell {
+  @include dash-input-shell;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.input {
+  @include dash-input;
+
+  /* WebKit draws its own clear button on type="search"; it sits off the
+     pill's baseline and duplicates the Clear Filters control. */
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+/* --- Toggle -------------------------------------------------------------- */
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 1.25rem;
+  padding: 0;
+  background: var(--dash-line-strong);
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.toggleOn {
+  background: #16a34a;
+}
+
+.toggleKnob {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(18, 38, 63, 0.25);
+  transition: transform 0.2s ease;
+
+  .toggleOn & {
+    transform: translateX(1rem);
+  }
+}
+
+/* --- Pagination ---------------------------------------------------------- */
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.pagerStep,
+.pagerPage {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--dash-ink-soft);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: var(--dash-ink);
+    border-color: var(--dash-line-strong);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.pagerPageActive {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+
+  &:hover {
+    color: #fff;
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+  }
+}
+
+.pagerGap {
+  padding: 0 0.125rem;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-muted);
+}

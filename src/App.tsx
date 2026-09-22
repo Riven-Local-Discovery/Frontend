@@ -9,20 +9,27 @@ import CtaFlow from './components/CtaFlow/CtaFlow';
 import SiteFooter from './components/SiteFooter/SiteFooter';
 import SignIn from './components/Auth/SignIn';
 import Register from './components/Auth/Register';
+import { VendorDashboard } from './components/Dashboard';
 
-type View = 'home' | 'signIn' | 'register';
+type View = 'home' | 'signIn' | 'register' | 'dashboard';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
+
+  if (view === 'dashboard') {
+    return <VendorDashboard onExit={() => setView('home')} />;
+  }
 
   if (view === 'signIn') {
     return (
       <SignIn
         onLogoClick={() => setView('home')}
+        onHomeClick={() => setView('home')}
         onSwitchToRegister={() => setView('register')}
         onSubmit={() => {
-          // TODO: call the real sign-in endpoint, then setView('home') on success.
+          // TODO: POST /auth/login, store the token pair, then continue.
           // Do not log `values` here — it carries the plaintext password.
+          setView('dashboard');
         }}
         onForgotPassword={() => {
           // TODO: route to a "forgot password" flow.
@@ -41,10 +48,13 @@ export default function App() {
     return (
       <Register
         onLogoClick={() => setView('home')}
+        onHomeClick={() => setView('home')}
         onSwitchToSignIn={() => setView('signIn')}
         onSubmit={() => {
-          // TODO: call the real vendor sign-up endpoint, then setView('home') on success.
+          // TODO: POST /auth/register/vendor, store the token pair, then continue.
           // Do not log `values` here — it carries the plaintext password.
+          // New vendors start unverified — the dashboard shows that state.
+          setView('dashboard');
         }}
         onGoogleSignUp={() => {
           // TODO: kick off Google OAuth.
@@ -61,6 +71,9 @@ export default function App() {
       <Navbar
         onJoinClick={() => setView('register')}
         onSignInClick={() => setView('signIn')}
+        /* Dev shortcut: opens the vendor dashboard without signing in.
+           Remove this prop once /auth/login is wired up. */
+        onDashboardClick={() => setView('dashboard')}
       />
       <main>
         {/* سكشن الهيرو يظهر فوراً */}

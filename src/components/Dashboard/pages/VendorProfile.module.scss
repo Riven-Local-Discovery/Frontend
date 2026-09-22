@@ -1,0 +1,580 @@
+@use '../DashboardShared' as *;
+
+.page {
+  @include dash-section-stack;
+}
+
+/* --- Identity header ----------------------------------------------------- */
+
+.header {
+  @include dash-card;
+  overflow: hidden;
+}
+
+.cover {
+  height: 8.5rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+  padding: 0 1.75rem 1.25rem;
+}
+
+/* The logo overlaps the cover by half its height, so it's pulled up by a
+   negative margin rather than absolutely positioned — that keeps the text
+   beside it on the same baseline without a second measurement. */
+.avatarWrap {
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: -3.75rem;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7.5rem;
+  height: 7.5rem;
+  overflow: hidden;
+  background: #0f3226;
+  border: 4px solid var(--dash-surface);
+  border-radius: 50%;
+
+  img {
+    width: 58%;
+    height: auto;
+  }
+}
+
+.avatarBadge {
+  position: absolute;
+  right: 0.375rem;
+  bottom: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--dash-ink-soft);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--dash-ink);
+    border-color: var(--dash-line-strong);
+  }
+}
+
+.identityText {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 0.25rem;
+}
+
+.vendorName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--dash-ink);
+}
+
+.verifiedMark {
+  color: var(--dash-green-ink);
+}
+
+.tagline {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--accent);
+}
+
+.subMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--dash-ink-muted);
+}
+
+.dot {
+  width: 0.25rem;
+  height: 0.25rem;
+  margin: 0 0.25rem;
+  background: var(--dash-line-strong);
+  border-radius: 50%;
+}
+
+.editProfile {
+  @include dash-btn-ghost;
+  flex: 0 0 auto;
+  margin-bottom: 0.25rem;
+}
+
+/* --- Tabs ---------------------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  gap: 1.75rem;
+  padding: 0 1.75rem;
+  border-top: 1px solid var(--dash-line);
+}
+
+.tab {
+  position: relative;
+  padding: 0.875rem 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dash-ink-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--dash-ink);
+  }
+}
+
+.tabActive {
+  color: var(--dash-ink);
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+}
+
+.statGrid {
+  @include dash-stat-grid(4);
+}
+
+/* --- Panels --------------------------------------------------------------
+   Overview is a three-column board; the narrower tabs reuse the same cards
+   in a two-column pair or on their own. */
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.single {
+  display: grid;
+  grid-template-columns: minmax(0, 46rem);
+  gap: 1.25rem;
+}
+
+.sideColumn {
+  @include dash-section-stack;
+  min-width: 0;
+}
+
+.card {
+  @include dash-card;
+  min-width: 0;
+  padding: 1.125rem 1.25rem 1.25rem;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  @include dash-card-title;
+
+  svg {
+    color: var(--dash-ink-muted);
+  }
+}
+
+.editButton {
+  @include dash-icon-btn;
+  flex: 0 0 auto;
+}
+
+/* --- Definition lists ---------------------------------------------------- */
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+
+  dt {
+    font-size: 0.8125rem;
+    color: var(--dash-ink-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--dash-ink);
+  }
+}
+
+.accentValue {
+  color: var(--accent) !important;
+}
+
+.socials {
+  display: flex;
+  gap: 0.75rem;
+
+  a {
+    display: inline-flex;
+    color: var(--dash-ink-muted);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+/* --- Verification banner ------------------------------------------------- */
+
+.verification {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--dash-radius);
+
+  strong {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--dash-ink);
+  }
+
+  p {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  span {
+    font-size: 0.6875rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.verified {
+  background: var(--dash-green);
+
+  svg,
+  p {
+    color: var(--dash-green-ink);
+  }
+}
+
+.unverified {
+  background: var(--dash-amber);
+
+  svg,
+  p {
+    color: var(--dash-amber-ink);
+  }
+}
+
+/* --- Media --------------------------------------------------------------- */
+
+.mediaGroup {
+  & + & {
+    margin-top: 1.125rem;
+  }
+}
+
+.mediaLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--dash-ink-muted);
+}
+
+.logoTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background: #0f3226;
+  border-radius: 0.5rem;
+
+  img {
+    width: 60%;
+    height: auto;
+  }
+}
+
+.mediaTiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+
+  li {
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--dash-slate);
+    border-radius: 0.5rem;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.mediaMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #fff;
+  background: #3d4654 !important;
+}
+
+/* --- Contact ------------------------------------------------------------- */
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  li {
+    display: grid;
+    grid-template-columns: 1rem 3.5rem minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: center;
+    color: var(--dash-ink-muted);
+  }
+
+  span {
+    font-size: 0.75rem;
+  }
+
+  strong {
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+}
+
+/* --- Location ------------------------------------------------------------ */
+
+.mapPlate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 6.5rem;
+  color: var(--dash-green-ink);
+  background: linear-gradient(140deg, #eef3ec 0%, #e6eef2 100%);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--dash-radius);
+
+  span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--dash-ink-soft);
+  }
+}
+
+.coords {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.625rem;
+  font-size: 0.6875rem;
+  color: var(--dash-ink-muted);
+
+  button {
+    margin-left: auto;
+  }
+}
+
+.emptyNote {
+  font-size: 0.8125rem;
+  color: var(--dash-ink-muted);
+}
+
+.story {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--dash-ink-soft);
+}
+
+/* --- Danger zone ---------------------------------------------------------
+   Held apart from the rest of the card set by its red edge, so the delete
+   never sits in the same visual group as the ordinary edit actions. */
+
+.dangerCard {
+  border-color: rgba(194, 59, 48, 0.32);
+
+  .cardTitle {
+    color: var(--dash-red-ink);
+  }
+}
+
+.dangerNote {
+  margin-bottom: 0.875rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--dash-ink-muted);
+}
+
+.dangerButton {
+  @include dash-btn;
+  width: 100%;
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+  border: 1px solid transparent;
+
+  &:hover {
+    color: #fff;
+    background: var(--dash-red-ink);
+    border-color: var(--dash-red-ink);
+  }
+}
+
+/* --- Quick actions ------------------------------------------------------- */
+
+.quickActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.quickPrimary {
+  @include dash-btn;
+  color: #fff;
+  background: #0f3a45;
+  border: 1px solid #0f3a45;
+
+  &:hover {
+    background: #17505f;
+    border-color: #17505f;
+  }
+}
+
+.quickGhost {
+  @include dash-btn-ghost;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1400px) {
+  .board {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* The side column spans the full width once the board is two-up, so the
+     three small cards sit in a row instead of a tall stack. */
+  .sideColumn {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@include dash-responsive;
+
+@media (max-width: 1024px) {
+  .board,
+  .pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sideColumn {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .identity {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+
+  .avatarWrap {
+    margin-top: -3rem;
+  }
+
+  .avatar {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .vendorName {
+    font-size: 1.625rem;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    gap: 1.25rem;
+  }
+
+  .tab {
+    white-space: nowrap;
+  }
+
+  .sideColumn {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}

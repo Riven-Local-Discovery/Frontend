@@ -39,6 +39,10 @@
   @include auth-header-link;
 }
 
+.homeButton {
+  @include auth-home-button;
+}
+
 .body {
   @include auth-body;
   align-items: flex-start;
@@ -148,14 +152,7 @@
   @include auth-textarea;
 }
 
-.select {
-  @include auth-select;
-}
 
-.selectChevron {
-  @include auth-input-icon;
-  flex: 0 0 auto;
-}
 
 .iconButton {
   @include auth-icon-button;

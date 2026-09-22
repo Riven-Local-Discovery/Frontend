@@ -1,0 +1,181 @@
+@use '../DashboardShared' as *;
+
+.page {
+  @include dash-section-stack;
+}
+
+.addButton {
+  @include dash-btn-primary;
+  height: 2.875rem;
+  padding: 0 1.5rem;
+}
+
+.statGrid {
+  @include dash-stat-grid(4);
+}
+
+/* --- Filter bar ---------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.clear {
+  @include dash-btn-ghost;
+  margin-left: auto;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* --- Table ---------------------------------------------------------------
+   The column template is declared once and applied to both the header and
+   the body rows, which is what keeps each header cell over its own column. */
+
+@mixin columns {
+  grid-template-columns:
+    1rem minmax(11rem, 2.1fr) minmax(6.5rem, 1.1fr) minmax(4.5rem, 0.8fr)
+    minmax(3.5rem, 0.6fr) minmax(6rem, 0.9fr) minmax(3rem, 0.5fr)
+    minmax(6rem, 0.9fr) minmax(5.5rem, 0.8fr);
+}
+
+/* Scrolls at any width. The old rule only kicked in under a viewport
+   media query, but the constraint is this column's width, not the window's:
+   the sidebar, the card inset and the page padding all come out of it
+   first, and the root font-size grows with the viewport, so a wider window
+   makes the table wider too and never trips a max-width breakpoint. */
+.table {
+  @include dash-table-shell;
+  overflow-x: auto;
+}
+
+.row {
+  @include dash-table-row;
+  @include columns;
+  min-width: 57.5rem;
+}
+
+.head {
+  @include dash-table-head;
+  @include columns;
+}
+
+.checkbox {
+  @include dash-checkbox;
+}
+
+/* --- Cells --------------------------------------------------------------- */
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.thumb {
+  @include dash-thumb(2.75rem);
+}
+
+.productText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.sku {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.price {
+  font-weight: 500;
+  color: var(--dash-ink);
+}
+
+.stockOut {
+  font-weight: 500;
+  color: var(--dash-red-ink);
+}
+
+.timestamp {
+  @include dash-timestamp;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.iconButton {
+  @include dash-icon-btn;
+}
+
+.danger:hover {
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+}
+
+.empty {
+  @include dash-empty;
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.tableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-muted);
+}
+
+/* --- Responsive ----------------------------------------------------------
+   Columns stay put and the table scrolls sideways. Reflowing a stock or
+   price column onto its own line makes the numbers impossible to compare. */
+
+@include dash-responsive;
+
+@media (max-width: 900px) {
+  .clear {
+    margin-left: 0;
+  }
+}

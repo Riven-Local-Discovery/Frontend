@@ -1,0 +1,56 @@
+@use '../DashboardShared' as *;
+
+.hero {
+  @include dash-hero;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.image {
+  @include dash-hero-media;
+}
+
+.scrim {
+  @include dash-hero-scrim;
+}
+
+.copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.eyebrow {
+  @include dash-hero-eyebrow;
+}
+
+.title {
+  @include dash-hero-title;
+  margin-top: 0.125rem;
+}
+
+.lede {
+  @include dash-hero-lede;
+}
+
+.action {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}

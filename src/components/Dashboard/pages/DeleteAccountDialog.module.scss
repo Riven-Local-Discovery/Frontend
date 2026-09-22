@@ -1,0 +1,79 @@
+@use '../DashboardShared' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.warning {
+  padding: 0.75rem 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+  border-radius: var(--dash-radius);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dash-ink-soft);
+
+  strong {
+    font-weight: 600;
+    color: var(--dash-ink);
+  }
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.5625rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--dash-ink);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line-strong);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: var(--dash-red-ink);
+    box-shadow: 0 0 0 3px rgba(194, 59, 48, 0.12);
+  }
+}
+
+.error {
+  font-size: 0.6875rem;
+  color: var(--dash-red-ink);
+}
+
+.cancel {
+  @include dash-btn-ghost;
+}
+
+.delete {
+  @include dash-btn;
+  color: #fff;
+  background: var(--dash-red-ink);
+  border: 1px solid var(--dash-red-ink);
+
+  &:hover:not(:disabled) {
+    background: #a83127;
+    border-color: #a83127;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

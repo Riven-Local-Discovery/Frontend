@@ -1,0 +1,97 @@
+@use '../DashboardShared' as *;
+
+.cover {
+  width: 100%;
+  height: 9rem;
+  object-fit: cover;
+  border-radius: var(--dash-radius);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
+
+  li {
+    padding: 0.1875rem 0.5rem;
+    font-size: 0.6875rem;
+    color: var(--dash-slate-ink);
+    background: var(--dash-slate);
+    border-radius: 0.25rem;
+  }
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--dash-line);
+
+  > div {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 0.4375rem;
+    font-size: 0.8125rem;
+    color: var(--dash-ink-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--dash-ink);
+
+    span {
+      color: var(--dash-ink-muted);
+    }
+  }
+}
+
+.finalNote {
+  margin-top: 1.25rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--dash-slate-ink);
+  background: var(--dash-slate);
+  border-radius: 0.5rem;
+}
+
+.close {
+  @include dash-btn-ghost;
+}
+
+.withdraw {
+  @include dash-btn;
+  color: #fff;
+  background: var(--dash-red-ink);
+  border: 1px solid var(--dash-red-ink);
+
+  &:hover {
+    background: #a83127;
+    border-color: #a83127;
+  }
+}
+
+@media (max-width: 640px) {
+  .facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}

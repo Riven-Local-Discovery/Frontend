@@ -1,0 +1,106 @@
+@use '../DashboardShared' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: 8rem;
+  color: var(--dash-green-ink);
+  background: linear-gradient(140deg, #eef3ec 0%, #e6eef2 100%);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--dash-radius);
+
+  span {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--dash-ink-soft);
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dash-ink-soft);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.5625rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--dash-ink);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line-strong);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+  }
+}
+
+.invalid {
+  border-color: var(--dash-red-ink);
+}
+
+.error {
+  font-size: 0.6875rem;
+  color: var(--dash-red-ink);
+}
+
+.hint {
+  font-size: 0.6875rem;
+  color: var(--dash-ink-muted);
+}
+
+.limitWarning {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+  border-radius: 0.5rem;
+}
+
+.cancel {
+  @include dash-btn-ghost;
+}
+
+.save {
+  @include dash-btn-primary;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
