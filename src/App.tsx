@@ -9,30 +9,54 @@ import CtaFlow from './components/CtaFlow/CtaFlow';
 import SiteFooter from './components/SiteFooter/SiteFooter';
 import SignIn from './components/Auth/SignIn';
 import Register from './components/Auth/Register';
+import { ApiError } from './lib/api';
+import { clearSession, loadSession, registerVendor, saveSession, signIn, type Session } from './lib/auth';
 
 type View = 'home' | 'signIn' | 'register';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
+  const [session, setSession] = useState<Session | null>(() => loadSession());
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string | undefined>(undefined);
+
+  /** Shared by both auth forms: run the call, surface the API error, land on success. */
+  const runAuth = async (call: () => Promise<Session>) => {
+    setSubmitting(true);
+    setServerError(undefined);
+    try {
+      const next = await call();
+      saveSession(next);
+      setSession(next);
+      setView('home');
+    } catch (error) {
+      setServerError(
+        error instanceof ApiError ? error.message : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSignOut = () => {
+    clearSession();
+    setSession(null);
+  };
+
+  /** Clears a stale error when moving between the two auth screens. */
+  const go = (next: View) => {
+    setServerError(undefined);
+    setView(next);
+  };
 
   if (view === 'signIn') {
     return (
       <SignIn
-        onLogoClick={() => setView('home')}
-        onSwitchToRegister={() => setView('register')}
-        onSubmit={() => {
-          // TODO: call the real sign-in endpoint, then setView('home') on success.
-          // Do not log `values` here — it carries the plaintext password.
-        }}
-        onForgotPassword={() => {
-          // TODO: route to a "forgot password" flow.
-        }}
-        onGoogleSignIn={() => {
-          // TODO: kick off Google OAuth.
-        }}
-        onFacebookSignIn={() => {
-          // TODO: kick off Facebook OAuth.
-        }}
+        onLogoClick={() => go('home')}
+        onSwitchToRegister={() => go('register')}
+        submitting={submitting}
+        serverError={serverError}
+        onSubmit={(values) => runAuth(() => signIn(values))}
       />
     );
   }
@@ -40,18 +64,11 @@ export default function App() {
   if (view === 'register') {
     return (
       <Register
-        onLogoClick={() => setView('home')}
-        onSwitchToSignIn={() => setView('signIn')}
-        onSubmit={() => {
-          // TODO: call the real vendor sign-up endpoint, then setView('home') on success.
-          // Do not log `values` here — it carries the plaintext password.
-        }}
-        onGoogleSignUp={() => {
-          // TODO: kick off Google OAuth.
-        }}
-        onFacebookSignUp={() => {
-          // TODO: kick off Facebook OAuth.
-        }}
+        onLogoClick={() => go('home')}
+        onSwitchToSignIn={() => go('signIn')}
+        submitting={submitting}
+        serverError={serverError}
+        onSubmit={(values) => runAuth(() => registerVendor(values))}
       />
     );
   }
@@ -59,9 +76,15 @@ export default function App() {
   return (
     <>
       <Navbar
-        onJoinClick={() => setView('register')}
-        onSignInClick={() => setView('signIn')}
+        onJoinClick={() => go('register')}
+        onSignInClick={() => go('signIn')}
       />
+      {session && (
+        <p style={{ textAlign: 'center', padding: '0.75rem', margin: 0 }}>
+          Signed in as {session.user.name} ({session.user.role}){' '}
+          <button type="button" onClick={handleSignOut}>Sign out</button>
+        </p>
+      )}
       <main>
         {/* سكشن الهيرو يظهر فوراً */}
         <motion.div

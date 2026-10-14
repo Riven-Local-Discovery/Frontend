@@ -105,6 +105,9 @@ function validate(values: RegisterValues): FieldErrors {
     errors.password = 'Create a password.';
   } else if (values.password.length < 8) {
     errors.password = 'Use at least 8 characters.';
+  } else if (!/\d/.test(values.password)) {
+    // The API enforces this too; catching it here avoids a round-trip 400.
+    errors.password = 'Include at least one number.';
   }
   if (!values.confirmPassword) {
     errors.confirmPassword = 'Confirm your password.';
