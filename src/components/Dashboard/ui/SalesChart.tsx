@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { SalesPoint } from '../mockData';
+import type { SalesPoint } from '../types';
 import styles from './SalesChart.module.scss';
 
 export interface SalesChartProps {

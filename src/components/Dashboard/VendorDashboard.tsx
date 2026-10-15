@@ -10,10 +10,9 @@ import VendorProfile from './pages/VendorProfile';
 import type { ProductDraft } from './pages/ProductForm';
 import type { VendorDraft } from './pages/VendorProfileForm';
 import { productVisibility } from './format';
-/* MOCK_SALES has no API behind it — nothing exposes a sales-over-time series —
-   and MOCK_UPCOMING_BAZAARS is a presentation-only shape. They are the last two
-   mocks left on this screen; everything else below comes from the database. */
-import { MOCK_SALES, MOCK_UPCOMING_BAZAARS } from './mockData';
+/* The sales series and the bazaar cards have no endpoints of their own, so
+   they are computed from the vendor's orders and the public bazaar list. */
+import { salesSeries, upcomingBazaars } from './derive';
 import { ApiError } from '../../lib/api';
 import { clearSession } from '../../lib/auth';
 import * as vendorApi from '../../lib/vendor';
@@ -84,8 +83,13 @@ function variantInput(variant: ProductVariant) {
  * screen — deactivating a product, advancing an order — is reflected in the
  * counts the others show.
  *
- * Data comes from ./mockData for now. Wiring the real API means replacing
- * the two useState seeds below with fetches; nothing else has to change.
+ * Everything is read from the API on mount — profile, products, orders,
+ * applications, the category tree and the public bazaar list — and every
+ * write goes through `run`, which reports the failure and re-reads so the
+ * screen cannot drift from the server.
+ *
+ * The sales series and the bazaar cards have no endpoints of their own and
+ * are derived in ./derive from the orders and bazaars already fetched.
  */
 export default function VendorDashboard({ onExit }: VendorDashboardProps) {
   const [view, setView] = useState<DashboardView>('overview');
@@ -101,6 +105,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
      form must offer real ids — the mock tree it used to read would have been
      rejected with 400 INVALID_REFERENCE on every create. */
   const [categories, setCategories] = useState<readonly CategoryOption[]>([]);
+  const [bazaars, setBazaars] = useState<vendorApi.BazaarWithLocation[]>([]);
 
   const [loading, setLoading] = useState(true);
   /** Set once the wait is long enough to be a cold start rather than latency. */
@@ -119,7 +124,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
     setLoadError(null);
     const slowTimer = setTimeout(() => setSlow(true), 4000);
     try {
-      const [me, profile, productPage, orderPage, applicationPage, categoryTree] =
+      const [me, profile, productPage, orderPage, applicationPage, categoryTree, bazaarPage] =
         await Promise.all([
           vendorApi.getCurrentUser(),
           vendorApi.getVendorProfile(),
@@ -127,6 +132,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
           vendorApi.listOrders(),
           vendorApi.listApplications(),
           vendorApi.listCategories(),
+          vendorApi.listPublicBazaars(),
         ]);
       setUser(me);
       setVendor(profile);
@@ -134,6 +140,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
       setOrders(orderPage.data);
       setApplications(applicationPage.data);
       setCategories(categoryOptions(categoryTree));
+      setBazaars(bazaarPage.data);
     } catch (error) {
       setLoadError(describe(error));
     } finally {
@@ -408,8 +415,8 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
                 userName={user?.name ?? vendor.name}
                 products={products}
                 orders={orders}
-                sales={MOCK_SALES}
-                bazaars={MOCK_UPCOMING_BAZAARS}
+                sales={salesSeries(orders)}
+                bazaars={upcomingBazaars(bazaars, applications)}
                 onNavigate={goTo}
               />
             )}

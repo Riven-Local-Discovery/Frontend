@@ -184,6 +184,30 @@ export const applyToBazaar = (bazaarId: string) =>
 export const withdrawApplication = (bazaarId: string) =>
   send<void>('DELETE', `/bazaars/${bazaarId}/apply`);
 
+/* --- Public bazaars ------------------------------------------------------- */
+
+/** A bazaar as the public list returns it: location comes back nested. */
+export type BazaarWithLocation = {
+  id: string;
+  organizerId: string;
+  name: string;
+  description: string | null;
+  coverMedia: string[];
+  scheduleType: string;
+  recurrenceRule: string | null;
+  startDate: string;
+  endDate: string | null;
+  status: string;
+  location: GeoPoint | null;
+};
+
+/**
+ * Only PUBLISHED bazaars of verified organizers come back here, which is also
+ * exactly what POST /bazaars/:id/apply accepts. No token needed.
+ */
+export const listPublicBazaars = (limit = 20) =>
+  apiRequest<PageEnvelope<BazaarWithLocation>>(`/bazaars?page=1&limit=${limit}`).then(unwrap);
+
 /* --- Categories ----------------------------------------------------------- */
 
 export const listCategories = () => apiRequest<Category[]>('/categories');

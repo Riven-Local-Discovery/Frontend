@@ -217,3 +217,32 @@ export interface Category {
   slug: string;
   children: Category[];
 }
+
+/* --- Overview-only view models ------------------------------------------- */
+
+/**
+ * A point on the sales chart. Not an API shape — the API exposes no
+ * sales-over-time endpoint, so this is derived from the vendor's own orders
+ * in ./derive.
+ */
+export interface SalesPoint {
+  date: string;
+  sales: number;
+  orders: number;
+}
+
+/**
+ * A bazaar as the Overview card shows it. Built in ./derive from the public
+ * bazaar list plus this vendor's applications. `locationLabel` is formatted
+ * coordinates: the API carries lat/lng, not a place name.
+ */
+export interface UpcomingBazaar {
+  id: string;
+  name: string;
+  image: string;
+  startDate: string;
+  endDate: string;
+  locationLabel: string;
+  /** How this vendor stands with it, not the bazaar's own status. */
+  state: 'APPLICATION_SUBMITTED' | 'OPEN_FOR_APPLICATIONS' | 'UPCOMING';
+}

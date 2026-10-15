@@ -27,8 +27,8 @@ import {
   orderStatusLabel,
   productVisibility,
 } from '../format';
-import type { SalesPoint, UpcomingBazaar } from '../mockData';
-import type { Order, Product, Vendor } from '../types';
+
+import type { Order, Product, SalesPoint, UpcomingBazaar, Vendor } from '../types';
 import type { DashboardView } from '../Sidebar';
 import styles from './Overview.module.scss';
 
