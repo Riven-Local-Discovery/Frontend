@@ -403,7 +403,10 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
             userName={user?.name ?? vendor.name}
             userRole="Vendor"
             verified={vendor.verified}
-            unreadCount={3}
+            /* No notifications module exists on the API yet, so there is
+               nothing to count — the badge stays off rather than inventing
+               unread items. */
+            unreadCount={0}
             onOpenMenu={() => setMenuOpen(true)}
             onProfileClick={() => goTo('profile')}
           />

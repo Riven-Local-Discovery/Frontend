@@ -9,16 +9,13 @@ import {
   ClockIcon,
   ContactCardIcon,
   CubeIcon,
-  FacebookIcon,
   ImageIcon,
-  InstagramIcon,
   MailIcon,
   MapPinIcon,
   PencilIcon,
   PhoneIcon,
   SettingsIcon,
   ShieldCheckIcon,
-  TikTokIcon,
 } from '../../icons';
 import StatCard from '../ui/StatCard';
 import DeleteAccountDialog from './DeleteAccountDialog';
@@ -118,24 +115,9 @@ export default function VendorProfile({
           <dt>Brand Story</dt>
           <dd>{vendor.brandStory ?? '—'}</dd>
         </div>
-        <div className={styles.field}>
-          <dt>Website</dt>
-          <dd>—</dd>
-        </div>
-        <div className={styles.field}>
-          <dt>Social Media</dt>
-          <dd className={styles.socials}>
-            <a href="#instagram" aria-label="Instagram">
-              <InstagramIcon size={15} />
-            </a>
-            <a href="#facebook" aria-label="Facebook">
-              <FacebookIcon size={15} />
-            </a>
-            <a href="#tiktok" aria-label="TikTok">
-              <TikTokIcon size={15} />
-            </a>
-          </dd>
-        </div>
+        {/* Website and social links are not on the Vendor model, so there
+            was nothing to show and nowhere for the links to go. Adding
+            them means new columns and a migration. */}
       </dl>
 
       <div
