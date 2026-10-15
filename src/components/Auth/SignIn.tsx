@@ -8,6 +8,7 @@ import {
   EyeOffIcon,
   FacebookIcon,
   GoogleIcon,
+  HomeIcon,
   LockIcon,
   MailIcon,
 } from '../icons';
@@ -29,6 +30,8 @@ export interface SignInProps {
   onFacebookSignIn?: () => void;
   /** Called when the Riven logo/wordmark is clicked, e.g. to return home. */
   onLogoClick?: () => void;
+  /** Called by the "Home" button. Falls back to `onLogoClick` when omitted. */
+  onHomeClick?: () => void;
   /** Surface a server-side error (bad credentials, network failure, ...). */
   serverError?: string;
   /** Disable the form while a submit request is in flight. */
@@ -60,6 +63,7 @@ export default function SignIn({
   onGoogleSignIn,
   onFacebookSignIn,
   onLogoClick,
+  onHomeClick,
   serverError,
   submitting = false,
 }: SignInProps) {
@@ -115,6 +119,14 @@ export default function SignIn({
             <span>Don&rsquo;t have an account?</span>
             <button type="button" className={styles.headerLink} onClick={onSwitchToRegister}>
               Sign Up
+            </button>
+            <button
+              type="button"
+              className={styles.homeButton}
+              onClick={onHomeClick ?? onLogoClick}
+            >
+              <HomeIcon size={18} />
+              Home
             </button>
           </div>
         </header>

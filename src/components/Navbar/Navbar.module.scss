@@ -184,21 +184,44 @@
 
 
 
-.signIn {
+/* Development shortcut into the vendor dashboard. Same pill geometry as
+   the other two actions, but dashed and dimmed so it never reads as part
+   of the real sign-up path. */
+.dashboard {
+
+  @include btn-base;
+
+  padding: 0.9375rem 1.625rem;
 
   font-size: 1rem;
 
-  color: var(--text);
+  color: var(--text-muted);
 
-  transition: color 0.2s ease;
+  background: transparent;
+
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 
 
 
   &:hover {
 
-    color: var(--accent);
+    color: var(--text);
+
+    border-color: rgba(255, 255, 255, 0.6);
+
+    background: rgba(255, 255, 255, 0.05);
 
   }
+
+}
+
+.signIn {
+
+  @include btn-outline;
+
+  padding: 0.9375rem 2.125rem;
+
+  font-size: 1rem;
 
 }
 
@@ -368,9 +391,21 @@
 
 
 
+  .dashboard {
+
+    width: 100%;
+
+  }
+
+
+
   .signIn {
 
+    width: 100%;
+
     font-size: 1.1rem;
+
+    text-align: center;
 
   }
 

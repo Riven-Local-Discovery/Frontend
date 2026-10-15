@@ -42,6 +42,10 @@
   @include auth-header-link;
 }
 
+.homeButton {
+  @include auth-home-button;
+}
+
 .body {
   @include auth-body;
 }

@@ -1,0 +1,514 @@
+@use '../DashboardShared' as *;
+
+.page {
+  @include dash-section-stack;
+}
+
+/* The right rail is a fixed column; everything else flexes into what's
+   left, which is what keeps the chart and the tables the same width. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.main {
+  @include dash-section-stack;
+  min-width: 0;
+}
+
+/* --- Greeting band ------------------------------------------------------- */
+
+.greeting {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  overflow: hidden;
+  min-height: 8.5rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--dash-radius-lg);
+  background: var(--dash-sidebar);
+}
+
+.greetingMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.greetingImage {
+  @include dash-hero-media;
+}
+
+.greetingScrim {
+  @include dash-hero-scrim;
+}
+
+.greetingCopy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.greetingEyebrow {
+  @include dash-hero-eyebrow;
+}
+
+.greetingName {
+  @include dash-hero-title;
+  margin-top: 0.125rem;
+}
+
+.greetingLede {
+  @include dash-hero-lede;
+}
+
+/* Sits on the hero's baseline with a short rule beneath it, echoing the
+   sidebar footer's accent mark. */
+.greetingMotto {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.75);
+
+  &::after {
+    content: '';
+    display: block;
+    width: 1.75rem;
+    height: 2px;
+    margin-top: 0.5rem;
+    margin-left: auto;
+    background: var(--accent);
+  }
+}
+
+.statGrid {
+  @include dash-stat-grid(4);
+}
+
+/* --- Cards --------------------------------------------------------------- */
+
+.card {
+  @include dash-card;
+  min-width: 0;
+  padding: 1.125rem 1.25rem 1.25rem;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  @include dash-card-title;
+}
+
+.alertIcon {
+  color: var(--dash-red-ink);
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dash-ink-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+/* --- Chart row ----------------------------------------------------------- */
+
+.chartRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.allClear {
+  padding: 1.5rem 0;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--dash-ink-muted);
+}
+
+.attentionList {
+  display: flex;
+  flex-direction: column;
+}
+
+.attentionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 0;
+  text-align: left;
+  color: var(--dash-ink-muted);
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--dash-line);
+  cursor: pointer;
+
+  li:first-child & {
+    border-top: 0;
+  }
+
+  &:hover {
+    color: var(--dash-ink);
+  }
+}
+
+.attentionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.625rem;
+}
+
+.attentionText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--dash-ink);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.amber {
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+}
+
+.red {
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+}
+
+.blue {
+  color: var(--dash-blue-ink);
+  background: var(--dash-blue);
+}
+
+/* --- Bottom row ---------------------------------------------------------- */
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.miniTable {
+  display: flex;
+  flex-direction: column;
+  /* Scrolls at any width — see the note in Orders.module.scss: the limit is
+     this card's width, which no viewport media query can see. */
+  overflow-x: auto;
+}
+
+.miniRow {
+  display: grid;
+  min-width: 34rem;
+  grid-template-columns:
+    minmax(4.5rem, 0.9fr) minmax(5rem, 1.1fr) minmax(3.5rem, 0.7fr)
+    minmax(4.5rem, 0.9fr) minmax(4.5rem, 0.9fr) minmax(5rem, 1fr) 0.875rem;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.625rem 0;
+  font-size: 0.75rem;
+  text-align: left;
+  color: var(--dash-ink-soft);
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--dash-line);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--dash-ink);
+  }
+}
+
+.miniHead {
+  padding-top: 0;
+  font-weight: 600;
+  color: var(--dash-ink-muted);
+  border-top: 0;
+  cursor: default;
+}
+
+.strong {
+  font-weight: 600;
+  color: var(--dash-ink);
+}
+
+/* --- Product cards ------------------------------------------------------- */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.875rem;
+}
+
+.productCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--dash-radius);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: var(--dash-line-strong);
+    box-shadow: var(--dash-shadow);
+  }
+}
+
+.productMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.productBadge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+}
+
+.badgeApproved {
+  color: var(--dash-green-ink);
+  background: var(--dash-green);
+}
+
+.badgePending {
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+}
+
+.productBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  padding: 0.625rem 0.75rem 0.75rem;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+}
+
+.productPrice {
+  font-size: 0.75rem;
+  color: var(--dash-ink-soft);
+}
+
+.productMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 0.6875rem;
+  color: var(--dash-ink-muted);
+}
+
+/* --- Right rail ---------------------------------------------------------- */
+
+.rail {
+  position: sticky;
+  top: 1.25rem;
+  min-width: 0;
+}
+
+.railHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.875rem;
+}
+
+.bazaarList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bazaarCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem;
+  text-align: left;
+  color: var(--dash-ink-muted);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--dash-radius);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: var(--dash-line-strong);
+    box-shadow: var(--dash-shadow);
+  }
+}
+
+.bazaarThumb {
+  @include dash-thumb(4rem);
+  height: 4.5rem;
+}
+
+.bazaarBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+}
+
+.bazaarState {
+  align-self: flex-start;
+  padding: 0.1875rem 0.4375rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+}
+
+.stateBlue {
+  color: var(--dash-blue-ink);
+  background: var(--dash-blue);
+}
+
+.stateGreen {
+  color: var(--dash-green-ink);
+  background: var(--dash-green);
+}
+
+.stateAmber {
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+}
+
+.bazaarMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  overflow: hidden;
+  font-size: 0.6875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--dash-ink-muted);
+}
+
+/* --- Responsive ----------------------------------------------------------
+   The rail drops under the main column first, then the paired cards
+   unstack, then the stat row narrows. */
+
+@media (max-width: 1400px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rail {
+    position: static;
+  }
+
+  .bazaarList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@include dash-responsive;
+
+@media (max-width: 1100px) {
+  .chartRow,
+  .bottomRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bazaarList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .greeting {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .greetingMotto::after {
+    margin-left: 0;
+  }
+
+  .bazaarList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .productGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -4,13 +4,13 @@ import authImage from '../../assets/img/register-river-sunset.jpg';
 import myLogo from '../../assets/img/logo.png';
 import {
   CheckIcon,
-  ChevronDownIcon,
   DocumentIcon,
   EyeIcon,
   EyeOffIcon,
   FacebookIcon,
   GoogleIcon,
   GridIcon,
+  HomeIcon,
   LockIcon,
   MailIcon,
   MapPinIcon,
@@ -22,6 +22,7 @@ import {
   UploadCloudIcon,
   UserIcon,
 } from '../icons';
+import Select from '../Dashboard/ui/Select';
 import styles from './Register.module.scss';
 
 export type VendorType = 'bazaar' | 'marketplace' | 'both';
@@ -50,6 +51,8 @@ export interface RegisterProps {
   onFacebookSignUp?: () => void;
   /** Called when the Riven logo/wordmark is clicked, e.g. to return home. */
   onLogoClick?: () => void;
+  /** Called by the "Home" button. Falls back to `onLogoClick` when omitted. */
+  onHomeClick?: () => void;
   /** Vendor categories shown in the select. */
   categories?: readonly string[];
   /** Surface a server-side error (email already registered, network failure, ...). */
@@ -133,6 +136,7 @@ export default function Register({
   onGoogleSignUp,
   onFacebookSignUp,
   onLogoClick,
+  onHomeClick,
   categories = DEFAULT_CATEGORIES,
   serverError,
   submitting = false,
@@ -152,6 +156,11 @@ export default function Register({
     agreeToTerms: false,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  const categoryOptions = categories.map((category) => ({
+    value: category,
+    label: category,
+  }));
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -236,6 +245,14 @@ export default function Register({
             <span>Already have an account?</span>
             <button type="button" className={styles.headerLink} onClick={onSwitchToSignIn}>
               Sign In
+            </button>
+            <button
+              type="button"
+              className={styles.homeButton}
+              onClick={onHomeClick ?? onLogoClick}
+            >
+              <HomeIcon size={18} />
+              Home
             </button>
           </div>
         </header>
@@ -475,28 +492,18 @@ export default function Register({
                 <label className={styles.label} htmlFor="reg-category">
                   Category
                 </label>
-                <div className={`${styles.inputShell} ${errors.category ? styles.inputShellInvalid : ''}`}>
-                  <GridIcon className={styles.inputIcon} size={18} />
-                  <select
-                    id="reg-category"
-                    className={styles.select}
-                    value={values.category}
-                    onChange={(event) => setField('category', event.target.value)}
-                    aria-invalid={Boolean(errors.category)}
-                    aria-describedby={errors.category ? 'reg-category-error' : undefined}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select your category
-                    </option>
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon className={styles.selectChevron} size={16} />
-                </div>
+                <Select
+                  id="reg-category"
+                  variant="auth"
+                  label="Category"
+                  placeholder="Select your category"
+                  icon={GridIcon}
+                  invalid={Boolean(errors.category)}
+                  describedBy={errors.category ? 'reg-category-error' : undefined}
+                  value={values.category}
+                  options={categoryOptions}
+                  onChange={(value) => setField('category', value)}
+                />
                 {errors.category && (
                   <span id="reg-category-error" className={styles.error}>
                     {errors.category}

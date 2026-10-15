@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { CloseIcon, MenuIcon } from '../icons';
-import styles from './Navbar.module.scss';
-import myLogo from '../../assets/img/logo.png'; 
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { CloseIcon, MenuIcon } from "../icons";
+import styles from "./Navbar.module.scss";
+import myLogo from "../../assets/img/logo.png";
+import { motion } from "framer-motion";
 
 interface NavLink {
   label: string;
@@ -10,10 +10,10 @@ interface NavLink {
 }
 
 const NAV_LINKS: readonly NavLink[] = [
-  { label: 'Explore', href: '#explore' },
-  { label: 'Communities', href: '#communities' },
-  { label: 'Experiences', href: '#experiences' },
-  { label: 'About', href: '#about' },
+  { label: "Explore", href: "#explore" },
+  { label: "Communities", href: "#communities" },
+  { label: "Experiences", href: "#experiences" },
+  { label: "About", href: "#about" },
 ];
 
 export interface NavbarProps {
@@ -21,9 +21,19 @@ export interface NavbarProps {
   onJoinClick?: () => void;
   /** Called when "Sign In" is clicked, instead of following the #signin anchor. */
   onSignInClick?: () => void;
+  /**
+   * Opens the vendor dashboard directly, skipping sign-in. This is a
+   * development shortcut for reaching the dashboard while the auth
+   * endpoints aren't wired up — drop the prop and the button disappears.
+   */
+  onDashboardClick?: () => void;
 }
 
-export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
+export default function Navbar({
+  onJoinClick,
+  onSignInClick,
+  onDashboardClick,
+}: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
 
@@ -64,26 +74,26 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
   }, [menuOpen]);
 
   return (
-    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.inner}>
         {/* أنيميشن كشف اللوجو في مكانه من اليمين للشمال */}
         <motion.a
           className={styles.logo}
           href="#top"
           aria-label="Riven - home"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-          initial={{ clipPath: 'inset(0 0 0 100%)', opacity: 0.3 }}
-          animate={{ clipPath: 'inset(0 0 0 0%)', opacity: 1 }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          initial={{ clipPath: "inset(0 0 0 100%)", opacity: 0.3 }}
+          animate={{ clipPath: "inset(0 0 0 0%)", opacity: 1 }}
           transition={{
             duration: 1.1,
             ease: [0.25, 1, 0.5, 1],
-            delay: 0.15
+            delay: 0.15,
           }}
         >
-          <img 
-            src={myLogo} 
-            alt="Logo" 
-            style={{ height: '36px', width: 'auto', display: 'block' }} 
+          <img
+            src={myLogo}
+            alt="Logo"
+            style={{ height: "36px", width: "auto", display: "block" }}
           />
           <span className={styles.wordmark}>iven</span>
         </motion.a>
@@ -99,9 +109,17 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
             ))}
           </ul>
         </nav>
-       
 
         <div className={styles.actions}>
+          {onDashboardClick && (
+            <button
+              type="button"
+              className={styles.dashboard}
+              onClick={onDashboardClick}
+            >
+              Dashboard
+            </button>
+          )}
           <a
             className={styles.signIn}
             href="#signin"
@@ -132,7 +150,7 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
           className={styles.burger}
           type="button"
           aria-expanded={menuOpen}
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((open) => !open)}
         >
           {menuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -158,7 +176,7 @@ export default function Navbar({ onJoinClick, onSignInClick }: NavbarProps) {
           </nav>
           <div className={styles.overlayActions}>
             <a
-              className={styles.signIn}
+              className={styles.join}
               href="#signin"
               onClick={(event) => {
                 setMenuOpen(false);

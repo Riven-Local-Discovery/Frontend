@@ -1,0 +1,78 @@
+@use '../DashboardShared' as *;
+
+.figure {
+  margin: 0;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--dash-ink-muted);
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+  }
+}
+
+.swatchLine,
+.swatchBar {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.swatchLine {
+  background: var(--accent);
+}
+
+.swatchBar {
+  background: var(--dash-ink);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* --- Marks ---------------------------------------------------------------
+   Strokes are set with non-scaling-stroke so a wide viewport doesn't render
+   the line and gridlines heavier than a narrow one. */
+
+.grid {
+  stroke: var(--dash-line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.axisLabel {
+  font-family: var(--font-body);
+  font-size: 10px;
+  fill: var(--dash-ink-muted);
+}
+
+.bar {
+  fill: var(--dash-ink);
+  opacity: 0.85;
+}
+
+.area {
+  stroke: none;
+}
+
+.line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}

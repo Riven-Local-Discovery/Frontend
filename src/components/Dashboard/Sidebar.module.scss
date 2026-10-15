@@ -1,0 +1,176 @@
+@use './DashboardShared' as *;
+
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 14.5rem;
+  width: 14.5rem;
+  overflow: hidden;
+  background: var(--dash-sidebar);
+  border-right: 1px solid var(--dash-sidebar-edge);
+}
+
+/* The artwork is a 260x955 strip drawn for this rail, so its proportions
+   already match and `cover` crops almost nothing. It's anchored to the
+   bottom: the river mouth is the busiest part of the image and belongs in
+   the empty space under the nav, not behind it. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* A wash over the photo, heaviest at the top where the logo and nav sit.
+   This is what buys the artwork its opacity: without it, legible nav text
+   would mean fading the river until it disappeared. */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 21, 36, 0.92) 0%,
+    rgba(10, 21, 36, 0.86) 42%,
+    rgba(10, 21, 36, 0.58) 72%,
+    rgba(10, 21, 36, 0.4) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.75rem 0 1.5rem;
+}
+
+/* --- Brand --------------------------------------------------------------- */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 1.25rem;
+  margin-bottom: 2.25rem;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.logo {
+  height: 2rem;
+  width: auto;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.wordmark {
+  @include wordmark(1.0625rem);
+}
+
+.tagline {
+  font-size: 0.4375rem;
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* --- Navigation ---------------------------------------------------------- */
+
+.nav {
+  flex: 1;
+}
+
+.link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.62);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.linkActive {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+
+  /* The orange marker is a pseudo-element rather than a border so the row's
+     text doesn't shift by the marker's width when it becomes active. */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: var(--accent);
+  }
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.footer {
+  position: relative;
+  padding: 0 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+
+  &::after {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    margin-top: 0.75rem;
+    background: var(--accent);
+  }
+}
+
+/* --- Mobile drawer -------------------------------------------------------
+   Below the tablet breakpoint the rail slides in over the content instead
+   of taking a column of its own. */
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+  }
+
+  .open {
+    transform: translateX(0);
+    box-shadow: 0 0 3rem rgba(0, 0, 0, 0.45);
+  }
+}

@@ -1,0 +1,98 @@
+@use '../DashboardShared' as *;
+
+.card {
+  @include dash-card;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+}
+
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.body {
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--dash-ink-muted);
+}
+
+.value {
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--dash-ink);
+}
+
+.delta {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--dash-ink-muted);
+
+  /* The figure and its arrow travel together and carry the colour; the
+     qualifier after them stays muted. */
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1875rem;
+    font-weight: 600;
+  }
+}
+
+/* --- Delta tones --------------------------------------------------------- */
+
+.positive {
+  color: var(--dash-green-ink);
+}
+
+.negative {
+  color: var(--dash-red-ink);
+}
+
+.neutral {
+  color: var(--dash-ink-muted);
+}
+
+/* --- Bubble tones -------------------------------------------------------- */
+
+.green {
+  color: var(--dash-green-ink);
+  background: var(--dash-green);
+}
+
+.amber {
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+}
+
+.red {
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+}
+
+.blue {
+  color: var(--dash-blue-ink);
+  background: var(--dash-blue);
+}
+
+.slate {
+  color: var(--dash-slate-ink);
+  background: var(--dash-slate);
+}

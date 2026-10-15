@@ -731,3 +731,662 @@ export function GoogleIcon({ className, size = 18 }: IconProps) {
     </svg>
   );
 }
+/** House outline, for the "Home" action in the auth page headers. */
+export function HomeIcon({ className, size = 18, strokeWidth = 1.6 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3 10.5 12 3.5l9 7" />
+      <path d="M5.5 9.5V20h13V9.5" />
+      <path d="M9.75 20v-5.5h4.5V20" />
+    </svg>
+  );
+}
+
+/* --- Dashboard ---------------------------------------------------------- */
+
+/** Bell, for the notifications button in the dashboard topbar. */
+export function BellIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M18 8.5a6 6 0 1 0-12 0c0 5.5-2 7-2 7h16s-2-1.5-2-7" />
+      <path d="M13.7 19a2 2 0 0 1-3.4 0" />
+    </svg>
+  );
+}
+
+/** Plus, for "Add Product" and other create actions. */
+export function PlusIcon({ className, size = 18, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+/** Pencil, for inline edit actions in table rows and card headers. */
+export function PencilIcon({ className, size = 16, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7.5 18.5 3.5 20l1.5-4Z" />
+      <path d="m14.5 5.5 3 3" />
+    </svg>
+  );
+}
+
+/** Waste bin, for destructive row actions. */
+export function TrashIcon({ className, size = 16, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M4 6.5h16" />
+      <path d="M9.5 6.5V4.8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.7" />
+      <path d="M6.5 6.5 7.3 19a1.4 1.4 0 0 0 1.4 1.3h6.6a1.4 1.4 0 0 0 1.4-1.3l.8-12.5" />
+      <path d="M10.5 10v6.5M13.5 10v6.5" />
+    </svg>
+  );
+}
+
+/** Three dots in a row — the "more actions" affordance. */
+export function DotsHorizontalIcon({ className, size = 16 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="5" cy="12" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="19" cy="12" r="1.6" />
+    </svg>
+  );
+}
+
+/** Three stacked dots — the vertical variant of the same menu affordance. */
+export function DotsVerticalIcon({ className, size = 16 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="5" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="12" cy="19" r="1.6" />
+    </svg>
+  );
+}
+
+/** Chevron pointing left, for the "previous page" pagination control. */
+export function ChevronLeftIcon({ className, size = 16, strokeWidth = 1.6 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M10 3.5 5.5 8 10 12.5" />
+    </svg>
+  );
+}
+
+/** Chevron pointing right, for "next page" and row drill-in links. */
+export function ChevronRightIcon({ className, size = 16, strokeWidth = 1.6 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 3.5 10.5 8 6 12.5" />
+    </svg>
+  );
+}
+
+/** Sliders, for the "Clear Filters" control on list screens. */
+export function SlidersIcon({ className, size = 16, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M4 7.5h10M18 7.5h2M4 16.5h4M12 16.5h8" />
+      <circle cx="16" cy="7.5" r="2" />
+      <circle cx="10" cy="16.5" r="2" />
+    </svg>
+  );
+}
+
+/** Tray with a down arrow, for the export buttons. */
+export function DownloadIcon({ className, size = 16, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 3.5v10" />
+      <path d="m8 10 4 3.5 4-3.5" />
+      <path d="M4.5 16v2.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V16" />
+    </svg>
+  );
+}
+
+/** Small up arrow for a positive delta on a stat card. */
+export function ArrowUpIcon({ className, size = 12, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" />
+    </svg>
+  );
+}
+
+/** Small down arrow for a negative delta on a stat card. */
+export function ArrowDownIcon({ className, size = 12, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 2v8M2.5 6.5 6 10l3.5-3.5" />
+    </svg>
+  );
+}
+
+/** Small right arrow for a flat (zero) delta on a stat card. */
+export function ArrowFlatIcon({ className, size = 12, strokeWidth = 1.8 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5" />
+    </svg>
+  );
+}
+
+/** Clock in a circle — "pending" stat cards and timestamps. */
+export function ClockIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7v5.2l3.2 1.9" />
+    </svg>
+  );
+}
+
+/** Cross in a circle — "rejected" / "cancelled" stat cards. */
+export function XCircleIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="m9.4 9.4 5.2 5.2M14.6 9.4l-5.2 5.2" />
+    </svg>
+  );
+}
+
+/** Tick in a circle — "accepted" / "delivered" stat cards and verified badges. */
+export function CheckCircleIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="m8.4 12.2 2.5 2.5 4.7-5" />
+    </svg>
+  );
+}
+
+/** Delivery van — the "shipped" stat card. */
+export function TruckIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M2.5 6.5h10v9h-10z" />
+      <path d="M12.5 10h3.6l2.9 3v2.5h-6.5z" />
+      <circle cx="6.5" cy="17.5" r="1.8" />
+      <circle cx="16" cy="17.5" r="1.8" />
+    </svg>
+  );
+}
+
+/** Isometric box — product counts and the "needs packing" queue. */
+export function CubeIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 3.2 20 7.6v8.8L12 20.8 4 16.4V7.6Z" />
+      <path d="M4 7.6 12 12l8-4.4M12 12v8.8" />
+    </svg>
+  );
+}
+
+/** Shield with a tick — verification state and the status filter. */
+export function ShieldCheckIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 3.2 5 6v5.5c0 4 2.9 7.4 7 8.8 4.1-1.4 7-4.8 7-8.8V6Z" />
+      <path d="m9 11.8 2.2 2.2L15 10.2" />
+    </svg>
+  );
+}
+
+/** Camera, for the avatar/logo replace badge on the profile screen. */
+export function CameraIcon({ className, size = 16, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3.5 8.5h3l1.4-2.2h8.2l1.4 2.2h3v10h-17z" />
+      <circle cx="12" cy="13" r="3.2" />
+    </svg>
+  );
+}
+
+/** Framed picture, for the Media card heading. */
+export function ImageIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3.5" y="5" width="17" height="14" rx="2" />
+      <circle cx="8.6" cy="9.8" r="1.5" />
+      <path d="m4.5 16.5 4.3-4 3.4 3.1 2.9-2.4 4.4 3.8" />
+    </svg>
+  );
+}
+
+/** Shopping bag — the Products entry in the sidebar. */
+export function BagIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M4.5 7.5h15l-1.1 12.3a1 1 0 0 1-1 .9H6.6a1 1 0 0 1-1-.9Z" />
+      <path d="M8.8 10V7a3.2 3.2 0 0 1 6.4 0v3" />
+    </svg>
+  );
+}
+
+/** Clipboard — the Orders entry in the sidebar. */
+export function ClipboardIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="4.5" y="4.5" width="15" height="16" rx="2" />
+      <path d="M9 3.2h6a1 1 0 0 1 1 1v1.6H8V4.2a1 1 0 0 1 1-1Z" />
+      <path d="M8.5 11h7M8.5 15h4.5" />
+    </svg>
+  );
+}
+
+/** Calendar with a day grid — the Bazaar Applications entry in the sidebar. */
+export function CalendarDaysIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3.5" y="5.5" width="17" height="15" rx="2" />
+      <path d="M3.5 10h17M8 3.5v4M16 3.5v4" />
+      <path d="M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2" />
+    </svg>
+  );
+}
+
+/** Exclamation in a circle — the "Needs attention" panel heading. */
+export function AlertCircleIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.8v4.8" />
+      <circle cx="12" cy="16" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+/** Cog — the Quick Actions panel heading. */
+export function SettingsIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="2.8" />
+      <path d="M12 3.2v2.1M12 18.7v2.1M20.8 12h-2.1M5.3 12H3.2M18.2 5.8l-1.5 1.5M7.3 16.7l-1.5 1.5M18.2 18.2l-1.5-1.5M7.3 7.3 5.8 5.8" />
+    </svg>
+  );
+}
+
+/** Payment card — the "Paid Orders" stat card. */
+export function CreditCardIcon({ className, size = 20, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="2.8" y="5.5" width="18.4" height="13" rx="2" />
+      <path d="M2.8 9.8h18.4M6.2 14.6h3.2" />
+    </svg>
+  );
+}
+
+/** Contact card — the Contact Information panel heading. */
+export function ContactCardIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2" />
+      <circle cx="8.6" cy="10.5" r="2" />
+      <path d="M5.4 15.6c.5-1.5 1.8-2.3 3.2-2.3s2.7.8 3.2 2.3M14.8 9.8h3.8M14.8 13.4h3.8" />
+    </svg>
+  );
+}
+
+/** Open book — the Business Information panel heading. */
+export function BookIcon({ className, size = 18, strokeWidth = 1.5 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={rem(size)}
+      height={rem(size)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M4 5.2h5a2.5 2.5 0 0 1 2.5 2.5v11a2 2 0 0 0-2-2H4Z" />
+      <path d="M20 5.2h-5a2.5 2.5 0 0 0-2.5 2.5v11a2 2 0 0 1 2-2H20Z" />
+    </svg>
+  );
+}

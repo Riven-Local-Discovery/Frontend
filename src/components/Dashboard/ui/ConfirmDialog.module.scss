@@ -1,0 +1,27 @@
+@use '../DashboardShared' as *;
+
+.message {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--dash-ink-soft);
+}
+
+.cancel {
+  @include dash-btn-ghost;
+}
+
+.confirm {
+  @include dash-btn-primary;
+}
+
+.confirmDanger {
+  @include dash-btn;
+  color: #fff;
+  background: var(--dash-red-ink);
+  border: 1px solid var(--dash-red-ink);
+
+  &:hover {
+    background: #a83127;
+    border-color: #a83127;
+  }
+}

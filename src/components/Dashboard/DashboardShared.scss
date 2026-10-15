@@ -1,0 +1,428 @@
+/* ==========================================================================
+   RIVEN — shared surface, table and control styles for the vendor dashboard.
+   Consumed by the dashboard's *.module.scss files via
+   `@use '../DashboardShared' as *;` (one level up from pages/).
+
+   The marketing site is dark; the dashboard is light. Rather than fight the
+   global dark tokens, `dashboard-tokens` redefines the palette on the
+   dashboard root only, so everything inside reads from --dash-* and nothing
+   outside the shell is affected.
+   ========================================================================== */
+
+@forward "../../styles/shared";
+@use "../../styles/shared" as *;
+
+/* --- Palette -------------------------------------------------------------
+   Applied once, on the dashboard shell. */
+
+@mixin dashboard-tokens {
+  /* Surfaces */
+  --dash-canvas: #f7f4ef;
+  --dash-surface: #ffffff;
+  --dash-surface-alt: #fbf9f6;
+  --dash-sidebar: #0a1524;
+  --dash-sidebar-edge: rgba(255, 255, 255, 0.07);
+
+  /* Lines */
+  --dash-line: #ece7df;
+  --dash-line-strong: #ded7cc;
+
+  /* Ink */
+  --dash-ink: #12263f;
+  --dash-ink-soft: #46586d;
+  --dash-ink-muted: #8a95a4;
+
+  /* Status — background / foreground pairs for pills and stat bubbles */
+  --dash-green: #eaf6ee;
+  --dash-green-ink: #1c7a45;
+  --dash-amber: #fdeedd;
+  --dash-amber-ink: #b2600f;
+  --dash-red: #fdeaea;
+  --dash-red-ink: #c23b30;
+  --dash-blue: #e7effb;
+  --dash-blue-ink: #2c66ad;
+  --dash-slate: #eef1f5;
+  --dash-slate-ink: #55657a;
+
+  /* Shape */
+  --dash-radius: 0.75rem;
+  --dash-radius-lg: 1rem;
+  --dash-shadow: 0 1px 2px rgba(18, 38, 63, 0.04),
+    0 8px 24px rgba(18, 38, 63, 0.05);
+}
+
+/* --- Surfaces ------------------------------------------------------------ */
+
+@mixin dash-card {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--dash-radius-lg);
+  box-shadow: var(--dash-shadow);
+}
+
+@mixin dash-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--dash-ink);
+}
+
+/* --- Page hero -----------------------------------------------------------
+   The dark photographic band at the top of each list screen. */
+
+@mixin dash-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 9rem;
+  padding: 1.75rem 2rem;
+  border-radius: var(--dash-radius-lg);
+  background: var(--dash-sidebar);
+  color: #fff;
+}
+
+@mixin dash-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/** Keeps the hero copy legible over the brightest part of the photo. */
+@mixin dash-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 13, 24, 0.94) 0%,
+    rgba(6, 13, 24, 0.78) 38%,
+    rgba(6, 13, 24, 0.42) 70%,
+    rgba(6, 13, 24, 0.55) 100%
+  );
+}
+
+@mixin dash-hero-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.05;
+  color: #fff;
+}
+
+@mixin dash-hero-eyebrow {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@mixin dash-hero-lede {
+  max-width: 34rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- Controls ------------------------------------------------------------ */
+
+@mixin dash-input-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  height: 2.75rem;
+  padding: 0 1rem;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: var(--radius-pill);
+  color: var(--dash-ink-muted);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+  }
+}
+
+@mixin dash-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--dash-ink);
+  background: none;
+  border: 0;
+  outline: none;
+
+  &::placeholder {
+    color: var(--dash-ink-muted);
+  }
+}
+
+@mixin dash-btn {
+  @include btn-base;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@mixin dash-btn-primary {
+  @include dash-btn;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+
+  &:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+    box-shadow: 0 0.375rem 1.125rem rgba(255, 107, 53, 0.32);
+  }
+}
+
+@mixin dash-btn-ghost {
+  @include dash-btn;
+  color: var(--dash-ink-soft);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+
+  &:hover {
+    color: var(--dash-ink);
+    border-color: var(--dash-line-strong);
+    background: var(--dash-surface-alt);
+  }
+}
+
+/** A small square icon-only button, as used in table action columns. */
+@mixin dash-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  color: var(--dash-ink-muted);
+  background: none;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+
+  &:hover {
+    color: var(--dash-ink);
+    background: var(--dash-slate);
+  }
+}
+
+/* --- Status pills --------------------------------------------------------
+   One shape, five tones. The tone is picked in StatusPill.tsx. */
+
+@mixin dash-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+}
+
+/* --- Tables --------------------------------------------------------------
+   All four list screens share one table skin. Column widths are set per
+   page with grid-template-columns on the row. */
+
+@mixin dash-table-shell {
+  @include dash-card;
+  overflow: hidden;
+
+  /* Tables scroll sideways whenever their columns don't fit, so the bar is
+     styled down to a hairline that only shows on hover — a default OS
+     scrollbar reads as a seam across the bottom of the card. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--dash-line-strong) transparent;
+
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--dash-line);
+    border-radius: var(--radius-pill);
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--dash-line-strong);
+  }
+}
+
+@mixin dash-table-head {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--dash-ink-muted);
+  background: var(--dash-surface-alt);
+  border-bottom: 1px solid var(--dash-line);
+}
+
+@mixin dash-table-row {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-soft);
+  border-bottom: 1px solid var(--dash-line);
+  transition: background-color 0.15s ease;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background: var(--dash-surface-alt);
+  }
+}
+
+/** The stacked "May 18, 2025 / 10:24 AM" cell used in every table. */
+@mixin dash-timestamp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-soft);
+
+  span {
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+/** Square product/bazaar thumbnail in the first column. */
+@mixin dash-thumb($size: 2.75rem) {
+  flex: 0 0 auto;
+  width: $size;
+  height: $size;
+  object-fit: cover;
+  background: var(--dash-slate);
+  border: 1px solid var(--dash-line);
+  border-radius: 0.5rem;
+}
+
+/** Round customer/organizer avatar. */
+@mixin dash-avatar($size: 2rem) {
+  flex: 0 0 auto;
+  width: $size;
+  height: $size;
+  object-fit: cover;
+  background: var(--dash-slate);
+  border-radius: 50%;
+}
+
+@mixin dash-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line-strong);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    /* A tick drawn as a background image keeps the control a single element,
+       which a bare <input> in a grid cell needs to stay aligned. */
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.3 12 13 4'/%3E%3C/svg%3E");
+    background-size: 0.75rem;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+/* --- Layout helpers ------------------------------------------------------ */
+
+/** The 4- or 5-up row of stat cards under each hero. */
+@mixin dash-stat-grid($columns: 4) {
+  display: grid;
+  grid-template-columns: repeat($columns, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@mixin dash-section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/** Empty-state block shown when a filter matches nothing. */
+@mixin dash-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+
+  strong {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--dash-ink);
+  }
+
+  span {
+    font-size: 0.8125rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+/* --- Responsive ----------------------------------------------------------
+   Tables become horizontally scrollable rather than reflowing: a vendor
+   comparing stock or totals needs the columns to stay aligned. */
+
+@mixin dash-responsive {
+  @media (max-width: 1280px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .statGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filters {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .statGrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

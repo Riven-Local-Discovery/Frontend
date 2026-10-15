@@ -1,0 +1,224 @@
+@use '../DashboardShared' as *;
+
+.page {
+  @include dash-section-stack;
+}
+
+.statGrid {
+  @include dash-stat-grid(4);
+}
+
+/* --- Filter bar ---------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.export {
+  @include dash-btn-ghost;
+  margin-left: auto;
+}
+
+/* --- Table --------------------------------------------------------------- */
+
+/* The actions column holds a stacked pair of buttons plus the kebab. It's
+   a fixed width because a grid column narrower than its content overflows
+   onto its neighbour rather than clipping. */
+@mixin columns {
+  grid-template-columns:
+    1rem minmax(4rem, 0.6fr) minmax(10rem, 1.6fr) minmax(7rem, 1fr)
+    minmax(7rem, 1fr) minmax(7.5rem, 1.1fr) minmax(5rem, 0.7fr)
+    minmax(6rem, 0.8fr) minmax(9.75rem, 9.75rem);
+}
+
+/* Scrolls at any width. The old rule only kicked in under a viewport
+   media query, but the constraint is this column's width, not the window's:
+   the sidebar, the card inset and the page padding all come out of it
+   first, and the root font-size grows with the viewport, so a wider window
+   makes the table wider too and never trips a max-width breakpoint. */
+.table {
+  @include dash-table-shell;
+  overflow-x: auto;
+}
+
+.row {
+  @include dash-table-row;
+  @include columns;
+  min-width: 68rem;
+}
+
+.head {
+  @include dash-table-head;
+  @include columns;
+}
+
+.checkbox {
+  @include dash-checkbox;
+}
+
+/* --- Cells --------------------------------------------------------------- */
+
+.reference {
+  font-weight: 500;
+  color: var(--dash-ink);
+}
+
+.bazaar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.thumb {
+  @include dash-thumb(2.75rem);
+}
+
+.bazaarText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--accent);
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.tag {
+  padding: 0.125rem 0.4375rem;
+  font-size: 0.6875rem;
+  color: var(--dash-slate-ink);
+  background: var(--dash-slate);
+  border-radius: 0.25rem;
+}
+
+/* Organizer, location and dates all share one icon-plus-two-lines shape. */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--dash-ink-muted);
+}
+
+.metaText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dash-ink);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.timestamp {
+  @include dash-timestamp;
+}
+
+/* --- Actions ------------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+/* The two text buttons stack; the kebab sits beside them, centred against
+   the pair. Stacking is what lets the column be ~10rem instead of ~16rem. */
+.actionStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.viewButton {
+  @include btn-base;
+  width: 100%;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dash-ink-soft);
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+
+  &:hover {
+    color: var(--dash-ink);
+    border-color: var(--dash-line-strong);
+    background: var(--dash-surface-alt);
+  }
+}
+
+.withdrawButton {
+  @include btn-base;
+  width: 100%;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: var(--dash-red-ink);
+  }
+}
+
+.iconButton {
+  @include dash-icon-btn;
+}
+
+.empty {
+  @include dash-empty;
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.tableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-muted);
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@include dash-responsive;
+
+@media (max-width: 900px) {
+  .export {
+    margin-left: 0;
+  }
+}

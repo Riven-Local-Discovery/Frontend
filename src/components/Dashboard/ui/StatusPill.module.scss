@@ -1,0 +1,35 @@
+@use '../DashboardShared' as *;
+
+.pill {
+  @include dash-pill;
+}
+
+.uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.green {
+  color: var(--dash-green-ink);
+  background: var(--dash-green);
+}
+
+.amber {
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+}
+
+.red {
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+}
+
+.blue {
+  color: var(--dash-blue-ink);
+  background: var(--dash-blue);
+}
+
+.slate {
+  color: var(--dash-slate-ink);
+  background: var(--dash-slate);
+}

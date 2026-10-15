@@ -1,0 +1,243 @@
+@use '../DashboardShared' as *;
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.groupNote {
+  font-size: 0.6875rem;
+  color: var(--dash-ink-muted);
+
+  code {
+    font-family: inherit;
+    color: var(--dash-ink-soft);
+  }
+}
+
+/* --- Status flow --------------------------------------------------------- */
+
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  flex: 1;
+  font-size: 0.6875rem;
+  text-align: center;
+  color: var(--dash-ink-muted);
+
+  /* The connector is drawn on each step but the first, so the line never
+     runs past either end of the flow. */
+  &:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0.3125rem;
+    right: 50%;
+    left: -50%;
+    height: 2px;
+    background: var(--dash-line);
+  }
+}
+
+.stepDot {
+  position: relative;
+  z-index: 1;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--dash-surface);
+  border: 2px solid var(--dash-line-strong);
+  border-radius: 50%;
+}
+
+.stepDone {
+  font-weight: 600;
+  color: var(--dash-green-ink);
+
+  .stepDot {
+    background: var(--dash-green-ink);
+    border-color: var(--dash-green-ink);
+  }
+
+  &::before {
+    background: var(--dash-green-ink);
+  }
+}
+
+.cancelledNote {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--dash-red-ink);
+  background: var(--dash-red);
+  border-radius: var(--dash-radius);
+}
+
+/* --- Sections ------------------------------------------------------------ */
+
+.section {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--dash-line);
+
+  & + & {
+    margin-top: 1.25rem;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dash-ink-muted);
+}
+
+/* --- Customer ------------------------------------------------------------ */
+
+.customer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  strong {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dash-ink);
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--dash-ink-muted);
+  }
+}
+
+.avatar {
+  @include dash-avatar(2.5rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--dash-sidebar);
+}
+
+.note {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.6875rem;
+  color: var(--dash-amber-ink);
+  background: var(--dash-amber);
+  border-radius: 0.5rem;
+}
+
+/* --- Items --------------------------------------------------------------- */
+
+@mixin item-columns {
+  grid-template-columns: 2.5rem minmax(0, 2.4fr) minmax(0, 1fr) 2.5rem minmax(0, 1fr);
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemRow {
+  display: grid;
+  @include item-columns;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.625rem 0;
+  font-size: 0.8125rem;
+  color: var(--dash-ink-soft);
+  border-bottom: 1px solid var(--dash-line);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.itemHead {
+  padding-top: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--dash-ink-muted);
+}
+
+.itemThumb {
+  @include dash-thumb(2.5rem);
+}
+
+.itemTitle {
+  font-weight: 500;
+  color: var(--dash-ink);
+}
+
+.lineTotal {
+  font-weight: 600;
+  color: var(--dash-ink);
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--dash-line-strong);
+
+  span {
+    color: var(--dash-ink-muted);
+  }
+
+  strong {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--dash-ink);
+  }
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.close {
+  @include dash-btn-ghost;
+}
+
+.advance {
+  @include dash-btn-primary;
+}
+
+@media (max-width: 640px) {
+  .flow {
+    display: none;
+  }
+
+  .items {
+    overflow-x: auto;
+  }
+
+  .itemRow {
+    min-width: 28rem;
+  }
+}
