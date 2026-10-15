@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
 import {
+  BagIcon,
   CubeIcon,
   DotsHorizontalIcon,
   EyeIcon,
+  EyeOffIcon,
   PencilIcon,
   PlusIcon,
   ShieldCheckIcon,
   SlidersIcon,
   TrashIcon,
-  XCircleIcon,
-  ClockIcon,
 } from '../../icons';
 import ConfirmDialog from '../ui/ConfirmDialog';
 import { Pagination, SearchField, SelectField, Toggle } from '../ui/Controls';
@@ -27,7 +27,7 @@ import {
   totalStock,
   variantLabel,
 } from '../format';
-import { CATEGORY_NAMES, MOCK_CATEGORIES } from '../mockData';
+import type { CategoryOption } from '../categories';
 import type { Product, Vendor } from '../types';
 import styles from './Products.module.scss';
 
@@ -36,19 +36,17 @@ const PAGE_SIZE = 8;
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All Statuses' },
   { value: 'LIVE', label: 'Live' },
-  { value: 'PENDING', label: 'Pending' },
-  { value: 'REJECTED', label: 'Rejected' },
+  /* PENDING and REJECTED went with product approval (API, 2026-09-27);
+     either option would always filter down to nothing. */
   { value: 'INACTIVE', label: 'Inactive' },
 ] as const;
 
-const CATEGORY_OPTIONS = [
-  { value: 'all', label: 'All Categories' },
-  ...MOCK_CATEGORIES.map((category) => ({ value: category.id, label: category.name })),
-];
 
 export interface ProductsProps {
   products: Product[];
   vendor: Vendor;
+  /** The real category tree, flattened. From GET /categories. */
+  categories: readonly CategoryOption[];
   /** Flips isActive. The real call is PATCH /vendors/me/products/:id. */
   onToggleActive: (productId: string, isActive: boolean) => void;
   /** POST /vendors/me/products. */
@@ -62,6 +60,7 @@ export interface ProductsProps {
 export default function Products({
   products,
   vendor,
+  categories,
   onToggleActive,
   onCreate,
   onUpdate,
@@ -88,17 +87,46 @@ export default function Products({
   /* The four stat cards count the whole catalogue, not the filtered view —
      they're a summary of the store, and would be meaningless if they moved
      every time someone typed in the search box. */
+  /**
+   * The API dropped product approval on 2026-09-27, so there is no PENDING or
+   * REJECTED state left to count — a product is live when it is active and its
+   * vendor is verified. The remaining split worth showing is live vs hidden,
+   * plus how much stock is behind it all.
+   *
+   * `addedThisWeek` is computed from createdAt rather than hardcoded: the stat
+   * cards previously shipped literal deltas ('3 this week'), which read as a
+   * contradiction next to a total of 0.
+   */
+  /* Built from the real tree rather than a module constant, so the filter
+     and the row labels agree with what the API will accept. */
+  const categoryFilterOptions = useMemo(
+    () => [{ value: 'all', label: 'All Categories' }, ...categories],
+    [categories],
+  );
+  const categoryLabels = useMemo(
+    () => Object.fromEntries(categories.map((option) => [option.value, option.label])),
+    [categories],
+  );
+
   const stats = useMemo(() => {
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
     let live = 0;
-    let pending = 0;
-    let rejected = 0;
+    let addedThisWeek = 0;
+    let stock = 0;
+
     for (const product of products) {
-      const visibility = productVisibility(product, vendor.verified);
-      if (visibility === 'LIVE') live += 1;
-      else if (visibility === 'PENDING') pending += 1;
-      else if (visibility === 'REJECTED') rejected += 1;
+      if (productVisibility(product, vendor.verified) === 'LIVE') live += 1;
+      if (new Date(product.createdAt).getTime() >= weekAgo) addedThisWeek += 1;
+      stock += totalStock(product);
     }
-    return { total: products.length, live, pending, rejected };
+
+    return {
+      total: products.length,
+      live,
+      hidden: products.length - live,
+      addedThisWeek,
+      stock,
+    };
   }, [products, vendor.verified]);
 
   const filtered = useMemo(() => {
@@ -115,7 +143,7 @@ export default function Products({
          variant SKU — so a vendor can paste a stock code straight in. */
       return (
         product.title.toLowerCase().includes(needle) ||
-        (CATEGORY_NAMES[product.categoryId] ?? '').toLowerCase().includes(needle) ||
+        (categoryLabels[product.categoryId] ?? '').toLowerCase().includes(needle) ||
         product.variants.some((variant) => variant.sku.toLowerCase().includes(needle))
       );
     });
@@ -177,28 +205,29 @@ export default function Products({
           value={stats.total}
           icon={CubeIcon}
           tone="slate"
-          delta={{ value: '3', note: 'this week', direction: 'up' }}
+          delta={{
+            value: String(stats.addedThisWeek),
+            note: 'this week',
+            direction: stats.addedThisWeek > 0 ? 'up' : 'flat',
+          }}
         />
         <StatCard
           label="Live Products"
           value={stats.live}
           icon={EyeIcon}
           tone="green"
-          delta={{ value: '2', note: 'this week', direction: 'up' }}
         />
         <StatCard
-          label="Pending Approval"
-          value={stats.pending}
-          icon={ClockIcon}
+          label="Hidden Products"
+          value={stats.hidden}
+          icon={EyeOffIcon}
           tone="amber"
-          delta={{ value: '1', note: 'this week', direction: 'up', tone: 'negative' }}
         />
         <StatCard
-          label="Rejected Products"
-          value={stats.rejected}
-          icon={XCircleIcon}
-          tone="red"
-          delta={{ value: '0', note: 'this week', direction: 'flat' }}
+          label="Units in Stock"
+          value={stats.stock}
+          icon={BagIcon}
+          tone="blue"
         />
       </div>
 
@@ -218,7 +247,7 @@ export default function Products({
             setCategory(value);
             setPage(1);
           }}
-          options={CATEGORY_OPTIONS}
+          options={categoryFilterOptions}
           icon={CubeIcon}
         />
         <SelectField
@@ -285,7 +314,7 @@ export default function Products({
                   <img className={styles.thumb} src={product.images[0]} alt="" />
                   <div className={styles.productText}>
                     <strong>{product.title}</strong>
-                    <span>{CATEGORY_NAMES[product.categoryId] ?? 'Uncategorised'}</span>
+                    <span>{categoryLabels[product.categoryId] ?? 'Uncategorised'}</span>
                   </div>
                 </div>
 
@@ -363,6 +392,7 @@ export default function Products({
         <ProductForm
           product={editing === 'new' ? undefined : editing}
           takenSkus={takenSkus}
+          categories={categories}
           onCancel={() => setEditing(null)}
           onSubmit={(draft) => {
             if (editing === 'new') onCreate(draft);

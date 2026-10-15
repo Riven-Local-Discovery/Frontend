@@ -17,6 +17,7 @@ import { MOCK_SALES, MOCK_UPCOMING_BAZAARS } from './mockData';
 import { ApiError } from '../../lib/api';
 import { clearSession } from '../../lib/auth';
 import * as vendorApi from '../../lib/vendor';
+import { categoryOptions, type CategoryOption } from './categories';
 import type {
   BazaarApplication,
   GeoPoint,
@@ -96,6 +97,10 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
   const [applications, setApplications] = useState<BazaarApplication[]>([]);
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const [user, setUser] = useState<vendorApi.CurrentUser | null>(null);
+  /* Flattened GET /categories. Product categoryId is a foreign key, so the
+     form must offer real ids — the mock tree it used to read would have been
+     rejected with 400 INVALID_REFERENCE on every create. */
+  const [categories, setCategories] = useState<readonly CategoryOption[]>([]);
 
   const [loading, setLoading] = useState(true);
   /** Set once the wait is long enough to be a cold start rather than latency. */
@@ -114,18 +119,21 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
     setLoadError(null);
     const slowTimer = setTimeout(() => setSlow(true), 4000);
     try {
-      const [me, profile, productPage, orderPage, applicationPage] = await Promise.all([
-        vendorApi.getCurrentUser(),
-        vendorApi.getVendorProfile(),
-        vendorApi.listProducts(),
-        vendorApi.listOrders(),
-        vendorApi.listApplications(),
-      ]);
+      const [me, profile, productPage, orderPage, applicationPage, categoryTree] =
+        await Promise.all([
+          vendorApi.getCurrentUser(),
+          vendorApi.getVendorProfile(),
+          vendorApi.listProducts(),
+          vendorApi.listOrders(),
+          vendorApi.listApplications(),
+          vendorApi.listCategories(),
+        ]);
       setUser(me);
       setVendor(profile);
       setProducts(productPage.data);
       setOrders(orderPage.data);
       setApplications(applicationPage.data);
+      setCategories(categoryOptions(categoryTree));
     } catch (error) {
       setLoadError(describe(error));
     } finally {
@@ -410,6 +418,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
               <Products
                 products={products}
                 vendor={vendor}
+                categories={categories}
                 onToggleActive={handleToggleActive}
                 onCreate={handleCreateProduct}
                 onUpdate={handleUpdateProduct}

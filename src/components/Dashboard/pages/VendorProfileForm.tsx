@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import Modal from '../ui/Modal';
 import Select from '../ui/Select';
-import { MOCK_CATEGORIES, PLACEHOLDER_IMAGES } from '../mockData';
+import { PLACEHOLDER_IMAGES } from '../mockData';
+import { VENDOR_CATEGORY_OPTIONS } from '../categories';
 import { vendorTypeLabel } from '../format';
 import type { Vendor, VendorType } from '../types';
 import styles from './VendorProfileForm.module.scss';
@@ -31,10 +32,7 @@ export interface VendorProfileFormProps {
   onCancel: () => void;
 }
 
-const CATEGORY_OPTIONS = MOCK_CATEGORIES.map((category) => ({
-  value: category.name,
-  label: category.name,
-}));
+const CATEGORY_OPTIONS = VENDOR_CATEGORY_OPTIONS;
 
 const VENDOR_TYPE_OPTIONS = (['BAZAAR_ONLY', 'MARKETPLACE', 'BOTH'] as VendorType[]).map(
   (type) => ({ value: type, label: vendorTypeLabel(type) }),

@@ -2,7 +2,8 @@ import { useMemo, useState, type FormEvent } from 'react';
 import { PlusIcon, TrashIcon } from '../../icons';
 import Modal from '../ui/Modal';
 import Select from '../ui/Select';
-import { MOCK_CATEGORIES, PLACEHOLDER_IMAGES } from '../mockData';
+import { PLACEHOLDER_IMAGES } from '../mockData';
+import type { CategoryOption } from '../categories';
 import type { Product, ProductVariant } from '../types';
 import styles from './ProductForm.module.scss';
 
@@ -26,16 +27,15 @@ export interface ProductFormProps {
    * a vendor to find out.
    */
   takenSkus: ReadonlySet<string>;
+  /** Real category options from GET /categories — a product’s categoryId is
+   *  a foreign key, so an invented id comes back 400 INVALID_REFERENCE. */
+  categories: readonly CategoryOption[];
   onSubmit: (draft: ProductDraft) => void;
   onCancel: () => void;
 }
 
 type Errors = Partial<Record<'title' | 'categoryId' | 'basePrice' | 'variants', string>>;
 
-const CATEGORY_OPTIONS = MOCK_CATEGORIES.map((category) => ({
-  value: category.id,
-  label: category.name,
-}));
 
 let draftVariantSeq = 0;
 
@@ -52,12 +52,12 @@ function blankVariant(): ProductVariant {
   };
 }
 
-function initialDraft(product?: Product): ProductDraft {
+function initialDraft(product: Product | undefined, categories: readonly CategoryOption[]): ProductDraft {
   if (!product) {
     return {
       title: '',
       description: '',
-      categoryId: MOCK_CATEGORIES[0]?.id ?? '',
+      categoryId: categories[0]?.value ?? '',
       basePrice: '',
       /* A product needs at least one image and there's no uploader yet, so
          a new draft starts on a placeholder the vendor can cycle. */
@@ -81,10 +81,11 @@ function initialDraft(product?: Product): ProductDraft {
 export default function ProductForm({
   product,
   takenSkus,
+  categories,
   onSubmit,
   onCancel,
 }: ProductFormProps) {
-  const [draft, setDraft] = useState<ProductDraft>(() => initialDraft(product));
+  const [draft, setDraft] = useState<ProductDraft>(() => initialDraft(product, categories));
   const [errors, setErrors] = useState<Errors>({});
 
   const isEdit = product !== undefined;
@@ -213,7 +214,7 @@ export default function ProductForm({
               label="Category"
               invalid={Boolean(errors.categoryId)}
               value={draft.categoryId}
-              options={CATEGORY_OPTIONS}
+              options={categories}
               onChange={(value) => set('categoryId', value)}
             />
             {errors.categoryId && <span className={styles.error}>{errors.categoryId}</span>}
