@@ -5,7 +5,7 @@
  * rather than spread from form values.
  */
 
-import { apiRequest } from './api';
+import { apiRequest, setRefreshHandler } from './api';
 import type { SignInValues } from '../components/Auth/SignIn';
 import type { RegisterValues, VendorType } from '../components/Auth/Register';
 
@@ -114,3 +114,32 @@ export function registerVendor(values: RegisterValues): Promise<Session> {
 export function signOut(refreshToken: string): Promise<void> {
   return apiRequest<void>('/auth/logout', { method: 'POST', body: { refreshToken } });
 }
+
+/**
+ * Trades the stored refresh token for a new pair. The API rotates on every
+ * call — the old refresh token is revoked — so the new pair must be stored
+ * even though only the access token is returned to the caller.
+ *
+ * Registered with the api module so any 401 on an authenticated request
+ * retries itself once. A failure here means the session is genuinely over
+ * (refresh expired, revoked, or the account was deactivated), so the stored
+ * session is cleared and the caller sees the original 401.
+ */
+async function refreshSession(): Promise<string | null> {
+  const current = loadSession();
+  if (!current?.refreshToken) return null;
+
+  try {
+    const next = await apiRequest<Session>('/auth/refresh', {
+      method: 'POST',
+      body: { refreshToken: current.refreshToken },
+    });
+    saveSession(next);
+    return next.accessToken;
+  } catch {
+    clearSession();
+    return null;
+  }
+}
+
+setRefreshHandler(refreshSession);

@@ -98,6 +98,8 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
   const [user, setUser] = useState<vendorApi.CurrentUser | null>(null);
 
   const [loading, setLoading] = useState(true);
+  /** Set once the wait is long enough to be a cold start rather than latency. */
+  const [slow, setSlow] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   /** Surfaces a failed write; the pages have no error prop of their own. */
   const [actionError, setActionError] = useState<string | null>(null);
@@ -108,7 +110,9 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
   /** Everything the shell needs, in parallel. */
   const reload = useCallback(async () => {
     setLoading(true);
+    setSlow(false);
     setLoadError(null);
+    const slowTimer = setTimeout(() => setSlow(true), 4000);
     try {
       const [me, profile, productPage, orderPage, applicationPage] = await Promise.all([
         vendorApi.getCurrentUser(),
@@ -125,6 +129,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
     } catch (error) {
       setLoadError(describe(error));
     } finally {
+      clearTimeout(slowTimer);
       setLoading(false);
     }
   }, []);
@@ -291,7 +296,20 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
       <div className={styles.page}>
         <img className={styles.backdrop} src={backdropImage} alt="" aria-hidden="true" />
         <div style={{ position: 'relative', padding: '4rem 1.5rem', textAlign: 'center', color: '#fff' }}>
-          {loading && <p>Loading your dashboard…</p>}
+          {loading && (
+            <>
+              <p>Loading your dashboard…</p>
+              {slow && (
+                /* A free Render instance sleeps after about 15 minutes idle and
+                   takes up to a minute to wake. Warm, these five reads finish
+                   in well under a second, so a long wait is the cold start —
+                   worth saying rather than looking frozen. */
+                <p style={{ opacity: 0.75, fontSize: '0.9rem' }}>
+                  The server is waking up. This can take up to a minute on the first request.
+                </p>
+              )}
+            </>
+          )}
           {!loading && loadError && (
             <>
               <p>Could not load your dashboard.</p>

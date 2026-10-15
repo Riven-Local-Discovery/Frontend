@@ -30,6 +30,30 @@ type RequestOptions = {
   signal?: AbortSignal;
 };
 
+/**
+ * Access tokens last 15 minutes, so an authenticated request will eventually
+ * come back 401 in any session left open. This hook lets auth.ts supply a
+ * "get me a fresh token" function without api.ts importing it, which would be
+ * a cycle. Set once, at module load.
+ */
+type RefreshHandler = () => Promise<string | null>;
+let refreshHandler: RefreshHandler | null = null;
+
+export function setRefreshHandler(handler: RefreshHandler): void {
+  refreshHandler = handler;
+}
+
+/** Collapses concurrent 401s into a single refresh instead of one per call. */
+let inFlightRefresh: Promise<string | null> | null = null;
+
+function refreshOnce(): Promise<string | null> {
+  if (!refreshHandler) return Promise.resolve(null);
+  inFlightRefresh ??= refreshHandler().finally(() => {
+    inFlightRefresh = null;
+  });
+  return inFlightRefresh;
+}
+
 function errorFrom(status: number, payload: unknown): ApiError {
   if (payload && typeof payload === 'object' && 'code' in payload) {
     const { code, message, details } = payload as {
@@ -47,6 +71,10 @@ function errorFrom(status: number, payload: unknown): ApiError {
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  return attempt<T>(path, options, true);
+}
+
+async function attempt<T>(path: string, options: RequestOptions, mayRefresh: boolean): Promise<T> {
   if (!BASE_URL) {
     throw new ApiError(0, 'API_URL_NOT_CONFIGURED', 'VITE_API_URL is not set. Copy .env.example to .env.local.');
   }
@@ -67,6 +95,16 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   } catch (cause) {
     // DNS failure, offline, or a CORS rejection — the browser gives us no detail.
     throw new ApiError(0, 'NETWORK_ERROR', 'Could not reach the server. Check your connection and try again.', cause);
+  }
+
+  // An expired access token: swap it for a fresh one and replay the request
+  // once. Only for calls that actually carried a token — a 401 from
+  // /auth/login means bad credentials, not an expired session.
+  if (response.status === 401 && token && mayRefresh) {
+    const renewed = await refreshOnce();
+    if (renewed) {
+      return attempt<T>(path, { ...options, token: renewed }, false);
+    }
   }
 
   if (response.status === 204) {
