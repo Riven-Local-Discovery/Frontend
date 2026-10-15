@@ -499,3 +499,52 @@
 
 } 
 
+
+/* Signed-in account block. Replaces the Sign In / Join Now pair, so it keeps
+   the same pill geometry as those buttons and the glass treatment the cards
+   elsewhere use — it reads as part of the bar rather than floating over it. */
+.account {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+
+  @include glass-card(var(--radius-pill));
+
+  padding: 0.5rem 0.5rem 0.5rem 1.125rem;
+}
+
+.accountIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  line-height: 1.2;
+}
+
+.accountName {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.accountRole {
+  @include eyebrow;
+
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.signOut {
+  @include btn-outline;
+
+  padding: 0.5rem 1.125rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 60rem) {
+  /* The burger takes over at this width; the account block would crowd it. */
+  .account {
+    display: none;
+  }
+}

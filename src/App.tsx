@@ -15,6 +15,11 @@ import { clearSession, loadSession, registerVendor, saveSession, signIn, type Se
 
 type View = 'home' | 'signIn' | 'register' | 'dashboard';
 
+/** SHOPPER -> Shopper. The navbar shows a label, not an enum. */
+function roleLabel(role: string): string {
+  return role.charAt(0) + role.slice(1).toLowerCase();
+}
+
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [session, setSession] = useState<Session | null>(() => loadSession());
@@ -98,49 +103,11 @@ export default function App() {
           // Only offered to a signed-in vendor. The dev shortcut that opened the
           // dashboard without credentials is gone now that /auth/login is real.
           onDashboardClick={session?.user.role === 'VENDOR' ? () => go('dashboard') : undefined}
+          // Passing a label is what swaps Sign In / Join Now for the account block.
+          userLabel={session?.user.name}
+          userRole={session ? roleLabel(session.user.role) : undefined}
+          onSignOutClick={handleSignOut}
         />
-        {session && (
-          // Fixed and above the navbar (which is position: fixed, z-index 50),
-          // and styled inline because global.scss strips every button back to
-          // plain text — a bare <button> here is invisible.
-          <div
-            style={{
-              position: 'fixed',
-              top: '0.75rem',
-              right: '1rem',
-              zIndex: 60,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              padding: '0.5rem 0.75rem',
-              borderRadius: '999px',
-              background: 'rgba(8, 15, 26, 0.85)',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
-              backdropFilter: 'blur(8px)',
-              color: '#fff',
-              fontSize: '0.85rem',
-            }}
-          >
-            <span>
-              {session.user.name} · {session.user.role}
-            </span>
-            <button
-              type="button"
-              onClick={handleSignOut}
-              style={{
-                padding: '0.3rem 0.7rem',
-                borderRadius: '999px',
-                border: '1px solid rgba(255, 255, 255, 0.35)',
-                background: 'rgba(255, 255, 255, 0.12)',
-                color: '#fff',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-              }}
-            >
-              Sign out
-            </button>
-          </div>
-        )}
         <main>
           {/* سكشن الهيرو يظهر فوراً */}
           <motion.div

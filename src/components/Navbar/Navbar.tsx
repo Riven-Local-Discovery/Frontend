@@ -21,18 +21,23 @@ export interface NavbarProps {
   onJoinClick?: () => void;
   /** Called when "Sign In" is clicked, instead of following the #signin anchor. */
   onSignInClick?: () => void;
-  /**
-   * Opens the vendor dashboard directly, skipping sign-in. This is a
-   * development shortcut for reaching the dashboard while the auth
-   * endpoints aren't wired up — drop the prop and the button disappears.
-   */
+  /** Opens the vendor dashboard. Only passed for a signed-in vendor. */
   onDashboardClick?: () => void;
+  /** The signed-in account's name. Its presence is what switches the
+   *  actions from "Sign In / Join Now" to the account block. */
+  userLabel?: string;
+  /** Shown under the name, e.g. "Vendor". */
+  userRole?: string;
+  onSignOutClick?: () => void;
 }
 
 export default function Navbar({
   onJoinClick,
   onSignInClick,
   onDashboardClick,
+  userLabel,
+  userRole,
+  onSignOutClick,
 }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
@@ -120,30 +125,47 @@ export default function Navbar({
               Dashboard
             </button>
           )}
-          <a
-            className={styles.signIn}
-            href="#signin"
-            onClick={(event) => {
-              if (onSignInClick) {
-                event.preventDefault();
-                onSignInClick();
-              }
-            }}
-          >
-            Sign In
-          </a>
-          <a
-            className={styles.join}
-            href="#join"
-            onClick={(event) => {
-              if (onJoinClick) {
-                event.preventDefault();
-                onJoinClick();
-              }
-            }}
-          >
-            Join Now
-          </a>
+
+          {/* Signed in: the account replaces the two entry points, since
+              "Sign In" and "Join Now" have nothing left to offer. */}
+          {userLabel ? (
+            <div className={styles.account}>
+              <span className={styles.accountIdentity}>
+                <span className={styles.accountName}>{userLabel}</span>
+                {userRole && <span className={styles.accountRole}>{userRole}</span>}
+              </span>
+              <button type="button" className={styles.signOut} onClick={onSignOutClick}>
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <>
+              <a
+                className={styles.signIn}
+                href="#signin"
+                onClick={(event) => {
+                  if (onSignInClick) {
+                    event.preventDefault();
+                    onSignInClick();
+                  }
+                }}
+              >
+                Sign In
+              </a>
+              <a
+                className={styles.join}
+                href="#join"
+                onClick={(event) => {
+                  if (onJoinClick) {
+                    event.preventDefault();
+                    onJoinClick();
+                  }
+                }}
+              >
+                Join Now
+              </a>
+            </>
+          )}
         </div>
 
         <button
