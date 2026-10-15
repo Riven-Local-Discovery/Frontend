@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { periodChange } from '../derive';
 import {
   CalendarIcon,
   CheckCircleIcon,
@@ -64,6 +65,14 @@ export default function Orders({ orders, onAdvanceStatus, onExport }: OrdersProp
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [detailId, setDetailId] = useState<string | null>(null);
+
+  /* Real 30-day comparison, and undefined when there is no prior period to
+     compare against — the status cards get none at all, because a status is
+     current state: an order delivered today may have been created months ago. */
+  const ordersChange = useMemo(
+    () => periodChange(orders.map((order) => order.createdAt)),
+    [orders],
+  );
 
   const stats = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -151,28 +160,27 @@ export default function Orders({ orders, onAdvanceStatus, onExport }: OrdersProp
           value={stats.total}
           icon={CubeIcon}
           tone="slate"
-          delta={{ value: '12%', note: 'vs last 30 days', direction: 'up' }}
+          delta={
+            ordersChange && { ...ordersChange, note: 'vs last 30 days' }
+          }
         />
         <StatCard
           label="Pending"
           value={stats.pending}
           icon={ClockIcon}
           tone="amber"
-          delta={{ value: '3%', note: 'vs last 30 days', direction: 'up', tone: 'negative' }}
         />
         <StatCard
           label="Shipped"
           value={stats.shipped}
           icon={TruckIcon}
           tone="blue"
-          delta={{ value: '20%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Delivered"
           value={stats.delivered}
           icon={CheckCircleIcon}
           tone="green"
-          delta={{ value: '16%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Cancelled"
@@ -181,7 +189,6 @@ export default function Orders({ orders, onAdvanceStatus, onExport }: OrdersProp
           tone="red"
           /* Fewer cancellations is good news, so a fall reads as positive
              here even though the arrow points down. */
-          delta={{ value: '25%', note: 'vs last 30 days', direction: 'down', tone: 'positive' }}
         />
       </div>
 

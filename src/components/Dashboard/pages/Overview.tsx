@@ -12,7 +12,6 @@ import {
   EyeIcon,
   HeartIcon,
   MapPinIcon,
-  XCircleIcon,
 } from '../../icons';
 import { SelectField } from '../ui/Controls';
 import SalesChart from '../ui/SalesChart';
@@ -74,20 +73,18 @@ export default function Overview({
 }: OverviewProps) {
   const [period, setPeriod] = useState('30');
 
+  /* Product approval was removed from the API on 2026-09-27, so there are no
+     PENDING or REJECTED products to count — a product is live when it is
+     active and its vendor is verified. What's left is live vs hidden. */
   const stats = useMemo(() => {
     let active = 0;
-    let pending = 0;
-    let rejected = 0;
     for (const product of products) {
-      const visibility = productVisibility(product, vendor.verified);
-      if (visibility === 'LIVE') active += 1;
-      else if (visibility === 'PENDING') pending += 1;
-      else if (visibility === 'REJECTED') rejected += 1;
+      if (productVisibility(product, vendor.verified) === 'LIVE') active += 1;
     }
 
     const paid = orders.filter((order) => order.status === 'PAID').length;
 
-    return { active, pending, rejected, paid };
+    return { active, hidden: products.length - active, paid };
   }, [products, orders, vendor.verified]);
 
   /* The chart window is a client-side slice: the spec has no analytics
@@ -110,24 +107,6 @@ export default function Overview({
   /* Only the rows that actually need doing appear, so an empty panel means
      an empty queue rather than three zeroes. */
   const attention = [
-    {
-      key: 'pending',
-      icon: CubeIcon,
-      tone: 'amber' as const,
-      title: 'Products pending approval',
-      count: stats.pending,
-      noun: stats.pending === 1 ? 'product' : 'products',
-      view: 'products' as DashboardView,
-    },
-    {
-      key: 'rejected',
-      icon: XCircleIcon,
-      tone: 'red' as const,
-      title: 'Products rejected',
-      count: stats.rejected,
-      noun: stats.rejected === 1 ? 'product' : 'products',
-      view: 'products' as DashboardView,
-    },
     {
       key: 'packing',
       icon: CreditCardIcon,
@@ -164,28 +143,24 @@ export default function Overview({
               value={stats.active}
               icon={CubeIcon}
               tone="slate"
-              delta={{ value: '2', note: 'this week', direction: 'up' }}
             />
             <StatCard
-              label="Pending Approval"
-              value={stats.pending}
+              label="Hidden Products"
+              value={stats.hidden}
               icon={ClockIcon}
               tone="amber"
-              delta={{ value: '1', note: 'this week', direction: 'up', tone: 'negative' }}
             />
             <StatCard
               label="Paid Orders"
               value={stats.paid}
               icon={CreditCardIcon}
               tone="green"
-              delta={{ value: '3', note: 'this week', direction: 'up' }}
             />
             <StatCard
               label="Bazaar Applications"
               value={bazaars.length}
               icon={CalendarDaysIcon}
               tone="blue"
-              delta={{ value: '1', note: 'this week', direction: 'up' }}
             />
           </div>
 

@@ -82,3 +82,40 @@ export function upcomingBazaars(
       state: appliedTo.has(bazaar.id) ? 'APPLICATION_SUBMITTED' : 'OPEN_FOR_APPLICATIONS',
     }));
 }
+
+/**
+ * A real period-over-period change: how many of `dates` fall in the trailing
+ * `days` against the `days` before that.
+ *
+ * Returns undefined rather than a number when there is nothing honest to show
+ * — no prior-period baseline means a percentage would be either a division by
+ * zero or a meaningless "100%". Every stat card on this dashboard used to
+ * carry a hardcoded figure ("12% vs last 30 days") regardless of its value,
+ * which read as nonsense beside a count of 0.
+ */
+export function periodChange(
+  dates: readonly (string | Date)[],
+  days = 30,
+): { value: string; direction: 'up' | 'down' | 'flat' } | undefined {
+  const now = Date.now();
+  const window = days * 24 * 60 * 60 * 1000;
+  const currentFrom = now - window;
+  const previousFrom = now - 2 * window;
+
+  let current = 0;
+  let previous = 0;
+  for (const date of dates) {
+    const time = new Date(date).getTime();
+    if (Number.isNaN(time)) continue;
+    if (time >= currentFrom) current += 1;
+    else if (time >= previousFrom) previous += 1;
+  }
+
+  if (previous === 0) return undefined;
+
+  const change = Math.round(((current - previous) / previous) * 100);
+  return {
+    value: `${Math.abs(change)}%`,
+    direction: change > 0 ? 'up' : change < 0 ? 'down' : 'flat',
+  };
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { periodChange } from '../derive';
 import {
   CalendarDaysIcon,
   CalendarIcon,
@@ -66,6 +67,13 @@ export default function BazaarApplications({
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [detailId, setDetailId] = useState<string | null>(null);
   const [withdrawing, setWithdrawing] = useState<BazaarApplication | null>(null);
+
+  /* Real 30-day comparison on the total; the per-status cards carry none,
+     since a decision can land long after the application was filed. */
+  const applicationsChange = useMemo(
+    () => periodChange(applications.map((application) => application.appliedAt)),
+    [applications],
+  );
 
   const stats = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -152,28 +160,27 @@ export default function BazaarApplications({
           value={stats.total}
           icon={CalendarDaysIcon}
           tone="blue"
-          delta={{ value: '33%', note: 'vs last 30 days', direction: 'up' }}
+          delta={
+            applicationsChange && { ...applicationsChange, note: 'vs last 30 days' }
+          }
         />
         <StatCard
           label="Pending"
           value={stats.pending}
           icon={ClockIcon}
           tone="amber"
-          delta={{ value: '67%', note: 'vs last 30 days', direction: 'up', tone: 'negative' }}
         />
         <StatCard
           label="Accepted"
           value={stats.accepted}
           icon={CheckCircleIcon}
           tone="green"
-          delta={{ value: '25%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Rejected"
           value={stats.rejected}
           icon={XCircleIcon}
           tone="red"
-          delta={{ value: '33%', note: 'vs last 30 days', direction: 'down', tone: 'positive' }}
         />
       </div>
 

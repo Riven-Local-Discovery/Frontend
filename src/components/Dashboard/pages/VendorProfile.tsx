@@ -408,28 +408,24 @@ export default function VendorProfile({
           value={productCount}
           icon={CubeIcon}
           tone="slate"
-          delta={{ value: '12%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Total Orders"
           value={orderCount}
           icon={CalendarDaysIcon}
           tone="blue"
-          delta={{ value: '12%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Active Products"
           value={activeProductCount}
           icon={CheckCircleIcon}
           tone="green"
-          delta={{ value: '20%', note: 'vs last 30 days', direction: 'up' }}
         />
         <StatCard
           label="Pending Approval"
           value={pendingProductCount}
           icon={ClockIcon}
           tone="amber"
-          delta={{ value: '1', note: 'this week', direction: 'up', tone: 'negative' }}
         />
       </div>
 
