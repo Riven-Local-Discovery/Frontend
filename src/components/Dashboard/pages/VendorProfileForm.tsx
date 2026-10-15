@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import Modal from '../ui/Modal';
 import Select from '../ui/Select';
-import { PLACEHOLDER_IMAGES } from '../mockData';
+import ImageUpload from '../ui/ImageUpload';
 import { VENDOR_CATEGORY_OPTIONS } from '../categories';
 import { vendorTypeLabel } from '../format';
 import type { Vendor, VendorType } from '../types';
@@ -67,16 +67,6 @@ export default function VendorProfileForm({
     }
   };
 
-  /* Cover media is a set, not a single choice — tapping a tile adds or
-     removes it, so a vendor can curate the strip shown on their profile. */
-  const toggleCover = (url: string) => {
-    setDraft((current) => ({
-      ...current,
-      coverMedia: current.coverMedia.includes(url)
-        ? current.coverMedia.filter((item) => item !== url)
-        : [...current.coverMedia, url],
-    }));
-  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -242,53 +232,27 @@ export default function VendorProfileForm({
 
           <div className={styles.field}>
             <span className={styles.label}>Banner</span>
-            {/* The real flow is POST /media/upload-url then a PUT straight to
-                storage; until that's wired these pick from bundled images so
-                every URL the form submits is one that actually resolves. */}
-            <ul className={styles.tiles}>
-              {PLACEHOLDER_IMAGES.map((url) => (
-                <li key={url}>
-                  <button
-                    type="button"
-                    className={`${styles.tile} ${
-                      draft.bannerUrl === url ? styles.tileActive : ''
-                    }`}
-                    aria-label="Use as banner"
-                    aria-pressed={draft.bannerUrl === url}
-                    onClick={() => set('bannerUrl', draft.bannerUrl === url ? null : url)}
-                  >
-                    <img src={url} alt="" />
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {/* Signed PUT straight to storage; the API only ever sees the URL. */}
+            <ImageUpload
+              purpose="VENDOR_COVER"
+              label="Upload banner"
+              value={draft.bannerUrl ? [draft.bannerUrl] : []}
+              onChange={(urls) => set('bannerUrl', urls[0] ?? null)}
+            />
           </div>
 
           <div className={styles.field}>
             <span className={styles.label}>
               Cover media <span className={styles.count}>{draft.coverMedia.length} selected</span>
             </span>
-            <ul className={styles.tiles}>
-              {PLACEHOLDER_IMAGES.map((url) => {
-                const picked = draft.coverMedia.includes(url);
-                return (
-                  <li key={url}>
-                    <button
-                      type="button"
-                      className={`${styles.tile} ${picked ? styles.tileActive : ''}`}
-                      aria-label="Toggle cover image"
-                      aria-pressed={picked}
-                      onClick={() => toggleCover(url)}
-                    >
-                      <img src={url} alt="" />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-            <span className={styles.hint}>
-              Placeholder library — swap for real uploads once /media/upload-url is wired.
-            </span>
+            <ImageUpload
+              purpose="VENDOR_COVER"
+              label="Upload cover"
+              multiple
+              max={10}
+              value={draft.coverMedia}
+              onChange={(urls) => set('coverMedia', urls)}
+            />
           </div>
         </section>
       </form>

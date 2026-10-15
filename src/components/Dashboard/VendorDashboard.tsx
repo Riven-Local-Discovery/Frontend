@@ -169,15 +169,15 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
      the save come back 429 LOCATION_RATE_LIMITED. */
   const [locationUpdatedAt, setLocationUpdatedAt] = useState<number | null>(null);
 
+  /* Live vs hidden. There is no approval state left to count — the API
+     dropped it on 2026-09-27 — so a product is live when it is active and
+     its vendor is verified, and hidden otherwise. */
   const productCounts = useMemo(() => {
     let active = 0;
-    let pending = 0;
     for (const product of products) {
-      const visibility = productVisibility(product, vendor?.verified ?? false);
-      if (visibility === 'LIVE') active += 1;
-      else if (visibility === 'PENDING') pending += 1;
+      if (productVisibility(product, vendor?.verified ?? false) === 'LIVE') active += 1;
     }
-    return { active, pending };
+    return { active, hidden: products.length - active };
   }, [products, vendor?.verified]);
 
   /* PATCH /vendors/me/products/:id. Applied optimistically so the switch
@@ -449,7 +449,7 @@ export default function VendorDashboard({ onExit }: VendorDashboardProps) {
                 vendor={vendor}
                 productCount={products.length}
                 activeProductCount={productCounts.active}
-                pendingProductCount={productCounts.pending}
+                hiddenProductCount={productCounts.hidden}
                 orderCount={orders.length}
                 contactEmail={user?.email ?? ""}
                 contactPhone={user?.phone ?? null}

@@ -46,7 +46,7 @@ export interface VendorProfileProps {
   /** Counts shown on the stat row, supplied by the shell. */
   productCount: number;
   activeProductCount: number;
-  pendingProductCount: number;
+  hiddenProductCount: number;
   orderCount: number;
   contactEmail: string;
   contactPhone: string | null;
@@ -67,7 +67,7 @@ export default function VendorProfile({
   vendor,
   productCount,
   activeProductCount,
-  pendingProductCount,
+  hiddenProductCount,
   orderCount,
   contactEmail,
   contactPhone,
@@ -422,8 +422,8 @@ export default function VendorProfile({
           tone="green"
         />
         <StatCard
-          label="Pending Approval"
-          value={pendingProductCount}
+          label="Hidden Products"
+          value={hiddenProductCount}
           icon={ClockIcon}
           tone="amber"
         />

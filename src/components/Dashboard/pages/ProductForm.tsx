@@ -2,7 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react';
 import { PlusIcon, TrashIcon } from '../../icons';
 import Modal from '../ui/Modal';
 import Select from '../ui/Select';
-import { PLACEHOLDER_IMAGES } from '../mockData';
+import ImageUpload from '../ui/ImageUpload';
 import type { CategoryOption } from '../categories';
 import type { Product, ProductVariant } from '../types';
 import styles from './ProductForm.module.scss';
@@ -61,7 +61,7 @@ function initialDraft(product: Product | undefined, categories: readonly Categor
       basePrice: '',
       /* A product needs at least one image and there's no uploader yet, so
          a new draft starts on a placeholder the vendor can cycle. */
-      images: [PLACEHOLDER_IMAGES[0]],
+      images: [],
       isActive: true,
       variants: [blankVariant()],
     };
@@ -253,30 +253,17 @@ export default function ProductForm({
         </div>
 
         <div className={styles.field}>
-          <span className={styles.label}>Image</span>
-          {/* POST /media/upload-url then PUT to storage is the real flow;
-              until that's wired, the form picks from bundled stand-ins so a
-              product always has the image the API requires. */}
-          <ul className={styles.imagePicker}>
-            {PLACEHOLDER_IMAGES.map((url) => (
-              <li key={url}>
-                <button
-                  type="button"
-                  className={`${styles.imageTile} ${
-                    draft.images[0] === url ? styles.imageTileActive : ''
-                  }`}
-                  aria-label="Use this image"
-                  aria-pressed={draft.images[0] === url}
-                  onClick={() => set('images', [url])}
-                >
-                  <img src={url} alt="" />
-                </button>
-              </li>
-            ))}
-          </ul>
-          <span className={styles.hint}>
-            Placeholder library — swap for real uploads once /media/upload-url is wired.
-          </span>
+          <span className={styles.label}>Images</span>
+          {/* Signed PUT straight to storage; the API stores only the URLs.
+              A product needs at least one, which validate() enforces. */}
+          <ImageUpload
+            purpose="PRODUCT_IMAGE"
+            label="Upload image"
+            multiple
+            max={10}
+            value={draft.images}
+            onChange={(urls) => set('images', urls)}
+          />
         </div>
 
         <label className={styles.checkRow}>
