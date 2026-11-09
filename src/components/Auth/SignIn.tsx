@@ -98,7 +98,7 @@ export default function SignIn({
         <div className={styles.scrim} />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 4, display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div className={styles.shell}>
         <header className={styles.header}>
           <a
             className={styles.logo}
@@ -111,12 +111,12 @@ export default function SignIn({
               }
             }}
           >
-            <img src={myLogo} alt="" style={{ height: '36px', width: 'auto', display: 'block' }} />
+            <img className={styles.logoImage} src={myLogo} alt="" />
             <span className={styles.wordmark}>iven</span>
           </a>
 
           <div className={styles.headerActions}>
-            <span>Don&rsquo;t have an account?</span>
+            <span className={styles.headerPrompt}>Don&rsquo;t have an account?</span>
             <button type="button" className={styles.headerLink} onClick={onSwitchToRegister}>
               Sign Up
             </button>
@@ -126,7 +126,7 @@ export default function SignIn({
               onClick={onHomeClick ?? onLogoClick}
             >
               <HomeIcon size={18} />
-              Home
+              <span className={styles.homeLabel}>Home</span>
             </button>
           </div>
         </header>
