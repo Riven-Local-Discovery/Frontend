@@ -15,11 +15,27 @@
 @mixin auth-page {
   position: relative;
   min-height: 100vh;
+  /* dvh tracks the mobile browser chrome, so the page doesn't jump or
+     leave a gap as the address bar collapses. */
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   align-items: stretch;
   background: var(--bg-deep);
   overflow: hidden;
+}
+
+/* Column that holds the header + body above the fixed background. */
+@mixin auth-shell {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  /* Flex items default to min-width: auto; without this the header's
+     nowrap pills could hold the column wider than a phone viewport. */
+  min-width: 0;
 }
 
 @mixin auth-media {
@@ -95,7 +111,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 2rem clamp(1.25rem, 4vw, 3.5rem) 0;
+  padding: 2rem clamp(1rem, 4vw, 3.5rem) 0;
+}
+
+@mixin auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 0 0 auto;
+}
+
+@mixin auth-logo-image {
+  display: block;
+  height: 36px;
+  width: auto;
 }
 
 @mixin auth-header-actions {
@@ -103,8 +132,13 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.875rem;
+  min-width: 0;
   font-size: 0.9375rem;
   color: var(--text-muted);
+}
+
+@mixin auth-header-prompt {
+  white-space: nowrap;
 }
 
 @mixin auth-header-link {
@@ -610,23 +644,43 @@
 
 /* --- Responsive -------------------------------------------------------------- */
 
+/* Breakpoints, widest first:
+   1024 — pitch stacks above the panel (tablet / small laptop)
+    768 — header drops the "Don't have an account?" prompt
+    640 — phone: tighter spacing, single-column grids, compact pills
+    480 — small phone: Home collapses to an icon-only button
+    360 — narrowest phones: shrink the wordmark
+   The header stays on one row at every width — logo left, actions right —
+   the same arrangement the landing Navbar keeps on mobile. */
+
 @mixin auth-responsive {
   @media (max-width: 1024px) {
     .body {
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-start;
+      gap: 2rem;
       padding-top: 1.5rem;
     }
 
     .pitch {
-      max-width: none;
+      flex: 0 0 auto;
+      max-width: 40rem;
+      margin-inline: auto;
       padding-top: 0.5rem;
       text-align: center;
     }
 
+    .title {
+      font-size: clamp(2.25rem, 6vw, 3.25rem);
+    }
+
     .lede {
       margin-inline: auto;
+    }
+
+    .flowTag {
+      margin-top: 1.5rem;
     }
 
     .features {
@@ -636,17 +690,92 @@
     }
 
     .panel {
+      flex: 0 0 auto;
       max-width: 32rem;
       margin-inline: auto;
     }
   }
 
+  @media (max-width: 768px) {
+    .headerPrompt {
+      display: none;
+    }
+  }
+
   @media (max-width: 640px) {
     .header {
-      padding-top: 1.5rem;
+      padding-top: 1.25rem;
+    }
+
+    .headerActions {
+      gap: 0.5rem;
+    }
+
+    .headerLink,
+    .homeButton {
+      padding: 0.6875rem 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    .logoImage {
+      height: 30px;
+    }
+
+    .wordmark {
+      font-size: 1.625rem;
+    }
+
+    .body {
+      gap: 1.5rem;
+      padding: 1.25rem 1rem 2rem;
+    }
+
+    .eyebrow {
+      margin-bottom: 0.75rem;
+    }
+
+    .title {
+      font-size: 2.125rem;
+    }
+
+    .lede {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    /* Decorative tagline; on a phone it only pushes the form further down. */
+    .flowTag {
+      display: none;
+    }
+
+    .panel {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .panelTitle {
+      font-size: 1.5rem;
+    }
+
+    .form {
+      margin-top: 1.25rem;
+    }
+
+    /* 16px stops iOS Safari from zooming the page when an input is focused. */
+    .input {
+      font-size: 1rem;
+    }
+
+    /* Comfortable touch target for the show/hide password toggle. */
+    .iconButton {
+      width: 2.25rem;
+      height: 2.25rem;
+      margin-right: -0.375rem;
+    }
+
+    .checkRow {
       flex-wrap: wrap;
-      justify-content: center;
-      row-gap: 1.25rem;
+      row-gap: 0.5rem;
     }
 
     .row,
@@ -654,9 +783,54 @@
     .socialRow {
       grid-template-columns: 1fr;
     }
+  }
+
+  @media (max-width: 480px) {
+    /* Icon-only Home: the label stays in the accessibility tree. */
+    .homeButton {
+      width: 2.625rem;
+      height: 2.625rem;
+      padding: 0;
+    }
+
+    .homeLabel {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .headerLink {
+      padding-inline: 1.125rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .header {
+      gap: 0.5rem;
+    }
+
+    .logo {
+      gap: 0.375rem;
+    }
+
+    .logoImage {
+      height: 26px;
+    }
+
+    .wordmark {
+      font-size: 1.375rem;
+      letter-spacing: 0.3em;
+    }
+
+    .headerLink {
+      padding-inline: 0.875rem;
+    }
 
     .title {
-      font-size: 2rem;
+      font-size: 1.875rem;
     }
   }
 }

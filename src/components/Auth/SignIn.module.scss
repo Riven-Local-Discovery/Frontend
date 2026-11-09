@@ -16,14 +16,20 @@
   @include auth-media-scrim;
 }
 
+.shell {
+  @include auth-shell;
+}
+
 .header {
   @include auth-header;
 }
 
 .logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
+  @include auth-logo;
+}
+
+.logoImage {
+  @include auth-logo-image;
 }
 
 .logoMark {
@@ -38,12 +44,20 @@
   @include auth-header-actions;
 }
 
+.headerPrompt {
+  @include auth-header-prompt;
+}
+
 .headerLink {
   @include auth-header-link;
 }
 
 .homeButton {
   @include auth-home-button;
+}
+
+.homeLabel {
+  display: inline;
 }
 
 .body {
